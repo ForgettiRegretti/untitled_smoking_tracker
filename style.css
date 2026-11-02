@@ -7,7 +7,7 @@ body {
 .main_container {
       display: flex;
     flex-direction: row;
-    align-items: center;      /* center horizontally */
+    align-items: center;
     gap: 16px;
     height: 100dvh;           /* exactly the visible screen height */
     padding: 16px;
@@ -17,7 +17,7 @@ body {
 .left {
     display: flex;
     flex-direction: column;
-    align-items: center;      /* center horizontally */
+    align-items: center;
     gap: 16px;
     height: 100dvh;           /* exactly the visible screen height */
     padding: 16px;
@@ -31,16 +31,30 @@ body {
     object-fit: contain;      /* keep the proportions, no stretching */
 }
 
-.left button {
+.left .fluppen_counter {
     flex-shrink: 0;           /* the button keeps its size */
-    padding: 12px 24px;
-    font-size: 1.1rem;
+}
+
+.fluppen_counter { 
+    box-sizing: border-box;
+    width: min(40vw, 200px);  /* 40% of the screen width, but never more than 200px */
+    padding: 5px;
+    border-radius: 25px;
+    background: none;
+    cursor: pointer;
+}
+
+.fluppen_counter img {
+  display: block;           /* removes a small gap below the image */
+  width: 100%;
+  height: auto;
+
 }
 
 .right {
     display: flex;
     flex-direction: column;
-    align-items: center;      /* center horizontally */
+    align-items: center;
     gap: 16px;
     height: 100dvh;           /* exactly the visible screen height */
     padding: 16px;
@@ -48,7 +62,7 @@ body {
 }
 
 .right label {
-    flex-shrink: 0;           /* the button keeps its size */
+    flex-shrink: 0;
     padding: 12px 24px;
     font-size: 1.1rem; 
 }
