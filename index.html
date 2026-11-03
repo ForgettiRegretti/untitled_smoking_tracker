@@ -13,22 +13,29 @@
 <body>
 
     <div class="main_container">
-        <div class="left">
-            <img src="./Images/IMG_3486.png" alt="base">
-            <button class="fluppen_counter">
-                <img src="./Images/IMG_0023.png" alt="fluppe button">
-            </button>
-        </div>
 
-        <div class="right">
-            <label for="menu">menu</label>
+        <div class="top">
+            <label for="menu">menu
                 <select name="menu">
                     <option value="main">Main</option>
                     <option value="settings">Settings</option>
                     <option value="statistic">Statistic</option>
                 </select>
+            </label>
+            <h1>Untitled Smoking Tracker</h1>
+        </div>
+
+        <div class="bottom">
+            <img src="./Images/IMG_3486.png" alt="base">
+            <p><span id="countLabel">0</span></p>
+            <button class="fluppen_counter" id="fluppenCounter">
+                <img src="./Images/IMG_0023.png" alt="fluppe button">
+            </button>
+            <p class="quote">"Solang man lebt, soll man rauchen" - Helmut Körschgen (1923–2002)</p>
         </div>
     </div>
+
+    <script src="script.js"></script>
 
 
 </body>
