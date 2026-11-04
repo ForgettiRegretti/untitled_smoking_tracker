@@ -38,6 +38,8 @@ let maxFluppe = 0;
 const maxInput = document.getElementById("maxInput");
 const labelMax = document.getElementById("maxLabel");
 
+labelMax.textContent = maxFluppe;
+
 maxInput.onchange = function() {
     maxFluppe = maxInput.value
     labelMax.textContent = maxFluppe;

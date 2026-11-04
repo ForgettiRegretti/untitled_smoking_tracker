@@ -90,7 +90,9 @@ body {
     gap: 15px;
     height: 90dvh;           
     padding: 15px;
-    box-sizing: border-box; 
+    box-sizing: border-box;
+    color: whitesmoke;
+ 
 }
 
 .hidden {
