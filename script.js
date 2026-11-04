@@ -1,5 +1,6 @@
 
 let count = 0;
+let max = 15;
 const buttonFluppe = document.getElementById("fluppenCounter");
 const labelFluppe = document.getElementById("countLabel");
 

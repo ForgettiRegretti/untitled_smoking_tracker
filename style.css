@@ -27,7 +27,6 @@ body {
 .top label {
     justify-self: start;         /* pushes the menu to the far left */
     padding: 10px;
-    background-color: aliceblue;
 }
 
 .top h1 {
@@ -35,7 +34,6 @@ body {
     padding: 0 20px;
     text-align: center;
     color: whitesmoke;
-    background-color: black;
 }
 
 .bottom {
@@ -56,11 +54,17 @@ body {
     object-fit: contain;      
 }
 
+.bottom .count_label {
+    flex-grow: 1;
+    color: whitesmoke;
+    font-size: min(5vw, 2rem);
+}
+
 .bottom span {
     flex-grow: 1;
     color: whitesmoke;
-    font-size: min(5vw, 100px);
-}
+    font-size: min(5vw,2rem);
+}    
 
 .bottom .fluppen_counter {
     flex-grow: 1;
