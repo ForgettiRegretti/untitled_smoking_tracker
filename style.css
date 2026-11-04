@@ -4,6 +4,7 @@ body {
 }
 
 
+
 .main_container {
     display: flex;
     flex-direction: column;
@@ -14,7 +15,7 @@ body {
     box-sizing: border-box;  
 }
 
-.top {
+.mcTop {
     display: grid;
     grid-template-columns: 1fr auto 1fr;  /* left | middle (as wide as the text) | right */
     align-items: center;
@@ -24,19 +25,19 @@ body {
     box-sizing: border-box;
 }
 
-.top label {
+.mcTop label {
     justify-self: start;         /* pushes the menu to the far left */
     padding: 10px;
 }
 
-.top h1 {
+.mcTop h1 {
     margin: 0;
     padding: 0 20px;
     text-align: center;
     color: whitesmoke;
 }
 
-.bottom {
+.mcBottom {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -47,31 +48,25 @@ body {
     box-sizing: border-box;
 }
 
-.bottom img {
+.mcBottom img {
     flex-grow: 2;               
     min-height: 0;          
     max-width: 100%;        
     object-fit: contain;      
 }
 
-.bottom .count_label {
+.mcBottom .count_label {
     flex-grow: 1;
     color: whitesmoke;
     font-size: min(5vw, 2rem);
-}
+} 
 
-.bottom span {
-    flex-grow: 1;
-    color: whitesmoke;
-    font-size: min(5vw,2rem);
-}    
-
-.bottom .fluppen_counter {
+.mcBottom .fluppen_counter {
     flex-grow: 1;
     box-sizing: border-box;
     width: min(40vw, 150px);
     padding: 10px;
-    border-radius: 20px;
+    border-radius: 10px;
     background-color: #0d4c70;
     cursor: pointer;
 }
@@ -82,7 +77,22 @@ body {
     height: auto;
 }
 
-.bottom .quote {
+.mcBottom .quote {
     flex-grow: 1;
     color: whitesmoke;
+}
+
+
+.settingsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: normal;
+    gap: 15px;
+    height: 90dvh;           
+    padding: 15px;
+    box-sizing: border-box; 
+}
+
+.hidden {
+    display: none;
 }

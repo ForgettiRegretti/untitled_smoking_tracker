@@ -14,26 +14,34 @@
 
     <div class="main_container">
 
-        <div class="top">
+        <div class="mcTop">
             <label for="menu">menu
-                <select name="menu">
-                    <option value="main">Main</option>
-                    <option value="settings">Settings</option>
-                    <option value="statistic">Statistic</option>
-                </select>
+            <select name="menu" id="menu">
+                <option value="main">Main</option>
+                <option value="settings">Settings</option>
+                <option value="statistic">Statistic</option>
+            </select>
             </label>
             <h1>Untitled Smoking Tracker</h1>
         </div>
 
-        <div class="bottom">
+        <div class="mcBottom" id="MCBottom">
             <img src="./Images/IMG_3486.png" alt="base">
-            <p class="count_label"><span id="countLabel">0</span>/15</p>
+            <p class="count_label"><span id="countLabel">0</span> / <span id="maxLabel"></span></p>
             <button class="fluppen_counter" id="fluppenCounter">
                 <img src="./Images/IMG_0023.png" alt="fluppe button">
             </button>
             <p class="quote">"Solang man lebt, soll man rauchen" - Helmut Körschgen (1923–2002)</p>
         </div>
+
+        <div class="settingsContainer" id="settings">
+            <h2>Settings</h2>
+            <label for="maxInput">Max Fluppen pro tag:</label>
+            <input type="number" id="maxInput" name="maxInput">
+        </div>
+        
     </div>
+
 
     <script src="script.js"></script>
 
