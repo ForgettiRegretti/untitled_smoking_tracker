@@ -38,15 +38,33 @@ buttonFluppe.addEventListener("click", function () {
 const MCBottom = document.getElementById("MCBottom");
 const settingsContainer = document.getElementById("settings");
 const menu = document.getElementById("menu");
+const settingsIcon = document.getElementById("settingsIcon");
+
+settingsIcon.addEventListener("click", function() {
+    settingsIcon.classList.add("hidden")
+    menu.classList.remove("hidden")
+})
+
+/*menu.addEventListener("click", function() {
+    menu.classList.add("hidden")
+    settingsIcon.classList.remove("hidden")
+})*/
+
+function toggleIcon () {
+    menu.classList.add("hidden")                // hier nochmal schick machen
+    settingsIcon.classList.remove("hidden")     // kann man ja keinem zeigen
+}
 
 menu.onchange = function() {
     if(menu.value==="main"){
         settingsContainer.classList.add("hidden");
-        MCBottom.classList.remove("hidden"); 
+        MCBottom.classList.remove("hidden");
+        toggleIcon();
     }
     else if(menu.value==="settings"){
         MCBottom.classList.add("hidden");
         settingsContainer.classList.remove("hidden");
+        toggleIcon();
     }
 }
 
