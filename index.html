@@ -2,11 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+
+    <link rel="manifest" href="manifest.json" />
+    <link rel="apple-touch-icon" href="./Images/IMG_Icon_smoll.png">
+
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Untitled Smoking Tracker" />
+    <meta name="apple-mobile-web-app-title" content="UnSmTr" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Untitled smoking tracker</title>
 
     <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
 
 </head>
 
@@ -26,10 +37,10 @@
         </div>
 
         <div class="mcBottom" id="MCBottom">
-            <img src="./Images/IMG_3486.png" alt="base">
+            <img src="./Images/IMG_lungBase.png" alt="base">
             <p class="count_label"><span id="countLabel">0</span> / <span id="maxLabel"></span></p>
             <button class="fluppen_counter" id="fluppenCounter">
-                <img src="./Images/IMG_0023.png" alt="fluppe button">
+                <img src="./Images/IMG_fluppenButton.png" alt="fluppe button">
             </button>
             <p class="quote">"Solang man lebt, soll man rauchen" - Helmut Körschgen (1923–2002)</p>
         </div>
@@ -41,10 +52,6 @@
         </div>
         
     </div>
-
-
-    <script src="script.js"></script>
-
 
 </body>
 </html>
