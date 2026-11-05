@@ -1,0 +1,26 @@
+{
+  "short_name": "UnSmTr",
+  "name": "Untitled Smoking Tracker",
+  "lang": "en",
+  "id": ".",
+  "icons": [
+    {
+      "src": "./Images/IMG_Icon_smoll.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./Images/IMG_Icon_big.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#f5f5f5",
+  "background_color": "#0198F1",
+  "scope": "."
+
+}
