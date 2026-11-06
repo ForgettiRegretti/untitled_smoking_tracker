@@ -1,6 +1,6 @@
 
 
-//load and save data in localStorage
+//Storage helper
 
 function loadData (key, fallback) {
     try {
@@ -15,6 +15,7 @@ function loadData (key, fallback) {
 function saveData(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 }
+
 
 // Handles the fluppen button click event, counts +1
 
@@ -53,7 +54,7 @@ function toggleIcon () {
     settingsIcon.classList.remove("hidden")     // kann man ja keinem zeigen
 }
 
-menu.onchange = function() {
+menu.addEventListener("change", function() {
     if(menu.value==="main"){
         settingsContainer.classList.add("hidden");
         MCBottom.classList.remove("hidden");
@@ -64,8 +65,7 @@ menu.onchange = function() {
         settingsContainer.classList.remove("hidden");
         toggleIcon();
     }
-}
-
+});
 
 
 // update max fluppen
@@ -79,9 +79,8 @@ labelMax.textContent = maxFluppe;
 maxInput.value = maxFluppe;
 
 
-maxInput.onchange = function() {
+maxInput.addEventListener("change", function() {
     maxFluppe = Number(maxInput.value);
     labelMax.textContent = maxFluppe;
     saveData("maxFluppe", maxFluppe);
-}
-
+});
