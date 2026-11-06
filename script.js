@@ -1,7 +1,18 @@
+let count, lsCount, maxFluppe;
 
+const buttonFluppe = document.getElementById("fluppenCounter");
+const labelFluppe = document.getElementById("countLabel");
+const MCBottom = document.getElementById("MCBottom");
+const settingsContainer = document.getElementById("settings");
+const menu = document.getElementById("menu");
+const settingsIcon = document.getElementById("settingsIcon");
+const maxInput = document.getElementById("maxInput");
+const labelMax = document.getElementById("maxLabel");
+
+
+// Functions
 
 //Storage helper
-
 function loadData (key, fallback) {
     try {
         const rawData = localStorage.getItem(key)
@@ -16,38 +27,20 @@ function saveData(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 }
 
-
-// Handles the fluppen button click event, counts +1
-
-let count = loadData("count", 0);
-const buttonFluppe = document.getElementById("fluppenCounter");
-const labelFluppe = document.getElementById("countLabel");
-
-labelFluppe.textContent = count;
-
-
+// Fluppen Button
 buttonFluppe.addEventListener("click", function () {
     count += 1;
     labelFluppe.textContent = count;
-    LScount.push({ time: Date.now(), "count": count });
-    saveData("count", count);
+    lsCount.push({ time: Date.now(), "count": count });
+    saveData("lsCount", lsCount);
 });
 
 
 // ClassList thingy to display different pages
-
-const MCBottom = document.getElementById("MCBottom");
-const settingsContainer = document.getElementById("settings");
-const menu = document.getElementById("menu");
-const settingsIcon = document.getElementById("settingsIcon");
-
 settingsIcon.addEventListener("click", function() {
     settingsIcon.classList.add("hidden")
     menu.classList.remove("hidden")
 })
-
-menu.classList.add("hidden");
-settingsContainer.classList.add("hidden");
 
 function toggleIcon () {
     menu.classList.add("hidden")                // hier nochmal schick machen
@@ -67,20 +60,21 @@ menu.addEventListener("change", function() {
     }
 });
 
-
 // update max fluppen
-
-let maxFluppe = loadData("maxFluppe", 0);
-
-const maxInput = document.getElementById("maxInput");
-const labelMax = document.getElementById("maxLabel");
-
-labelMax.textContent = maxFluppe;
-maxInput.value = maxFluppe;
-
-
 maxInput.addEventListener("change", function() {
     maxFluppe = Number(maxInput.value);
     labelMax.textContent = maxFluppe;
     saveData("maxFluppe", maxFluppe);
 });
+
+// first load
+
+lsCount = loadData("lsCount", []);
+count = lsCount.length > 0 ? lsCount[lsCount.length - 1].count : 0;
+maxFluppe = loadData("maxFluppe", 0);
+
+labelFluppe.textContent = count;
+menu.classList.add("hidden");
+settingsContainer.classList.add("hidden");
+labelMax.textContent = maxFluppe;
+maxInput.value = maxFluppe;
