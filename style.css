@@ -1,3 +1,6 @@
+html, body {
+    margin: 0;
+}
 
 body {
     background-color: #0198F1;
@@ -9,7 +12,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100dvh;           
+    height: 100dvh;
     padding: 10px;
     box-sizing: border-box;  
 }
@@ -23,20 +26,24 @@ body {
     box-sizing: border-box;
 }
 
-.mcTop label {
-    justify-self: start;         /* pushes the menu to the far left */
+.mcTop .left {
+    display: flex;
+    flex-direction: column;
+    justify-self: start;
+    
+}
+
+.left label {
     padding: 10px;
 }
 
-.mcTop img {
-    justify-self: start;
+.left img {
     padding: 10px;
-    width: 5dvw;
+    width: min(10dvw, 50px);
     height: auto;
 }
 
 .mcTop h1 {
-    margin: 0;
     padding: 0 20px;
     text-align: center;
     color: whitesmoke;
@@ -46,27 +53,28 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-height: 90%; 
+    flex: 1;
+    min-height: 0;
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
 }
 
 .mcBottom img {
-    flex-grow: 2;               
+    flex-grow: 1 1 0;               
     min-height: 0;          
     max-width: 100%;        
     object-fit: contain;      
 }
 
 .mcBottom .count_label {
-    flex-grow: 1;
+    flex-grow: 0 0 auto;
     color: whitesmoke;
     font-size: min(5vw, 2rem);
 } 
 
 .mcBottom .fluppen_counter {
-    flex-grow: 1;
+    flex-grow:  0 0 auto;
     box-sizing: border-box;
     width: min(40vw, 150px);
     padding: 10px;
@@ -82,7 +90,7 @@ body {
 }
 
 .mcBottom .quote {
-    flex-grow: 1;
+    flex-grow:  0 0 auto;
     padding: 10px;
     color: whitesmoke;
 }
@@ -92,8 +100,9 @@ body {
     display: flex;
     flex-direction: column;
     align-items: normal;
-    gap: 15px;
-    height: 90dvh;           
+    flex: 1;              /* take all space left below .mcTop */
+    min-height: 0;        /* allow shrinking */
+    gap: 15px;           
     padding: 15px;
     box-sizing: border-box;
     color: whitesmoke;

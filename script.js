@@ -45,10 +45,8 @@ settingsIcon.addEventListener("click", function() {
     menu.classList.remove("hidden")
 })
 
-/*menu.addEventListener("click", function() {
-    menu.classList.add("hidden")
-    settingsIcon.classList.remove("hidden")
-})*/
+menu.classList.add("hidden");
+settingsContainer.classList.add("hidden");
 
 function toggleIcon () {
     menu.classList.add("hidden")                // hier nochmal schick machen
