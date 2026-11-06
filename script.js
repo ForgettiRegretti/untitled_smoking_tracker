@@ -8,6 +8,7 @@ const menu = document.getElementById("menu");
 const settingsIcon = document.getElementById("settingsIcon");
 const maxInput = document.getElementById("maxInput");
 const labelMax = document.getElementById("maxLabel");
+const resetLS = document.getElementById("resetLS")
 
 
 // Functions
@@ -34,6 +35,19 @@ buttonFluppe.addEventListener("click", function () {
     lsCount.push({ time: Date.now(), "count": count });
     saveData("lsCount", lsCount);
 });
+
+// reset button
+resetLS.addEventListener("click", function () {
+    localStorage.removeItem("lsCount");
+    localStorage.removeItem("maxFluppe")
+    lsCount = [];
+    count = 0;
+    labelFluppe.textContent = count;
+    maxFluppe = 0;
+    labelMax.textContent = maxFluppe;
+
+}
+);
 
 
 // ClassList thingy to display different pages
@@ -67,7 +81,7 @@ maxInput.addEventListener("change", function() {
     saveData("maxFluppe", maxFluppe);
 });
 
-// first load
+// initial page load
 
 lsCount = loadData("lsCount", []);
 count = lsCount.length > 0 ? lsCount[lsCount.length - 1].count : 0;
