@@ -4,7 +4,7 @@ const buttonFluppe = document.getElementById("fluppenCounter");
 const labelFluppe = document.getElementById("countLabel");
 const MCBottom = document.getElementById("MCBottom");
 const settingsContainer = document.getElementById("settings");
-const menu = document.getElementById("menu");
+const menu = document.querySelector('.menu');
 const settingsIcon = document.getElementById("settingsIcon");
 const maxInput = document.getElementById("maxInput");
 const labelMax = document.getElementById("maxLabel");
@@ -52,27 +52,9 @@ resetLS.addEventListener("click", function () {
 
 // ClassList thingy to display different pages
 settingsIcon.addEventListener("click", function() {
-    settingsIcon.classList.add("hidden")
-    menu.classList.remove("hidden")
+    menu.classList.toggle("active");
 })
 
-function toggleIcon () {
-    menu.classList.add("hidden")                // hier nochmal schick machen
-    settingsIcon.classList.remove("hidden")     // kann man ja keinem zeigen
-}
-
-menu.addEventListener("change", function() {
-    if(menu.value==="main"){
-        settingsContainer.classList.add("hidden");
-        MCBottom.classList.remove("hidden");
-        toggleIcon();
-    }
-    else if(menu.value==="settings"){
-        MCBottom.classList.add("hidden");
-        settingsContainer.classList.remove("hidden");
-        toggleIcon();
-    }
-});
 
 // update max fluppen
 maxInput.addEventListener("change", function() {
