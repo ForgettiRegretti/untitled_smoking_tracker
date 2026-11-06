@@ -56,6 +56,9 @@ settingsIcon.addEventListener("click", function() {
 })
 
 
+
+
+
 // update max fluppen
 maxInput.addEventListener("change", function() {
     maxFluppe = Number(maxInput.value);
