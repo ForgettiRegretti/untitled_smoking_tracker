@@ -72,13 +72,11 @@ resetLS.addEventListener("click", function () {
 );
 
 // ClassList thingy to display different pages
+// nothing to see here, just perfectly written and efficient code
+// TODO add navStats
 function toggleNav () {
     menu.classList.toggle("active");
 }
-
-
-settingsIcon.addEventListener("click", toggleNav);
-
 
 navHome.addEventListener("click", function() {
     if(MCBottom.classList.contains("hidden")) {
@@ -111,7 +109,7 @@ lsCount = loadData("lsCount", []);
 count = lsCount.length > 0 ? lsCount[lsCount.length - 1].count : 0;
 checkReset();
 maxFluppe = loadData("maxFluppe", 0);
-
+settingsIcon.addEventListener("click", toggleNav);
 labelFluppe.textContent = count;
 labelMax.textContent = maxFluppe;
 maxInput.value = maxFluppe;
