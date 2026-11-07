@@ -15,8 +15,6 @@ const navStats = document.getElementById("navStats");
 const fluppenBergIMG = document.querySelector(".fluppenBerg");
 
 
-//fluppenBergIMG.style.transform = "translateY(40%)";
-
 // Functions
 
 //Storage helper
@@ -48,6 +46,7 @@ function checkReset() {
 document.addEventListener("visibilitychange", function() {
     if(document.visibilityState === "visible") {
         checkReset();
+        getMoving();
     }
 });
 
@@ -57,6 +56,7 @@ buttonFluppe.addEventListener("click", function () {
     labelFluppe.textContent = count;
     lsCount.push({ time: Date.now(), "count": count });
     saveData("lsCount", lsCount);
+    getMoving();
 });
 
 // reset button
@@ -95,14 +95,20 @@ navSettings.addEventListener("click", function() {
     }
 });
 
-
-
 // update max fluppen
 maxInput.addEventListener("change", function() {
     maxFluppe = Number(maxInput.value);
     labelMax.textContent = maxFluppe;
     saveData("maxFluppe", maxFluppe);
 });
+
+// calculate transitionn for animation 
+function getMoving () {
+    let percent = 100 - (count / maxFluppe) * 100;
+    if(percent >= 0 && percent <= 100){
+    fluppenBergIMG.style.transform = `translateY(${percent}%)`;
+    }
+};
 
 // initial page load
 
@@ -114,3 +120,4 @@ settingsIcon.addEventListener("click", toggleNav);
 labelFluppe.textContent = count;
 labelMax.textContent = maxFluppe;
 maxInput.value = maxFluppe;
+getMoving();
