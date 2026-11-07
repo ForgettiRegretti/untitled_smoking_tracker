@@ -4,11 +4,15 @@ const buttonFluppe = document.getElementById("fluppenCounter");
 const labelFluppe = document.getElementById("countLabel");
 const MCBottom = document.getElementById("MCBottom");
 const settingsContainer = document.getElementById("settings");
-const menu = document.getElementById("menu");
+const menu = document.querySelector('.menu');
 const settingsIcon = document.getElementById("settingsIcon");
 const maxInput = document.getElementById("maxInput");
 const labelMax = document.getElementById("maxLabel");
 const resetLS = document.getElementById("resetLS");
+const navHome = document.getElementById("navHome");
+const navSettings = document.getElementById("navSettings");
+const navStats = document.getElementById("navStats");
+
 
 
 
@@ -67,30 +71,32 @@ resetLS.addEventListener("click", function () {
 }
 );
 
-
 // ClassList thingy to display different pages
-settingsIcon.addEventListener("click", function() {
-    settingsIcon.classList.add("hidden")
-    menu.classList.remove("hidden")
-});
+function toggleNav () {
+    menu.classList.toggle("active");
+}
 
-function toggleIcon () {
-    menu.classList.add("hidden")                // hier nochmal schick machen
-    settingsIcon.classList.remove("hidden")     // kann man ja keinem zeigen
-};
 
-menu.addEventListener("change", function() {
-    if(menu.value==="main"){
-        settingsContainer.classList.add("hidden");
-        MCBottom.classList.remove("hidden");
-        toggleIcon();
-    }
-    else if(menu.value==="settings"){
-        MCBottom.classList.add("hidden");
-        settingsContainer.classList.remove("hidden");
-        toggleIcon();
+settingsIcon.addEventListener("click", toggleNav);
+
+
+navHome.addEventListener("click", function() {
+    if(MCBottom.classList.contains("hidden")) {
+        MCBottom.classList.toggle("hidden");
+        settingsContainer.classList.toggle("hidden");
+        toggleNav();
     }
 });
+
+navSettings.addEventListener("click", function() {
+    if(settingsContainer.classList.contains("hidden")) {
+        MCBottom.classList.toggle("hidden");
+        settingsContainer.classList.toggle("hidden");
+        toggleNav();
+    }
+});
+
+
 
 // update max fluppen
 maxInput.addEventListener("change", function() {
@@ -107,7 +113,5 @@ checkReset();
 maxFluppe = loadData("maxFluppe", 0);
 
 labelFluppe.textContent = count;
-menu.classList.add("hidden");
-settingsContainer.classList.add("hidden");
 labelMax.textContent = maxFluppe;
 maxInput.value = maxFluppe;
