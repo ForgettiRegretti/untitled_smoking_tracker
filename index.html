@@ -27,9 +27,9 @@
         <div class="mcTop">
             <div class="menu">
                 <ul>
-                    <li>Home</li>
-                    <li>Settings</li>
-                    <li>Statistic</li>
+                    <li><button id="navHome">Home</button></li>
+                    <li><button id="navSettings">Settings</button></li>
+                    <li><button id="navStats">Statistic</button></li>
                 </ul>
             </div>
             <img id="settingsIcon" src="./Images/IMG_settingsIcon.png" alt="Settings Icon">
@@ -45,7 +45,7 @@
             <p class="quote">"Solang man lebt, soll man rauchen" - Helmut Körschgen (1923–2002)</p>
         </div>
 
-        <div class="settingsContainer" id="settings">
+        <div class="settingsContainer hidden" id="settings">
             <h2>Settings</h2>
             <label for="maxInput">Max Fluppen pro tag:</label>
             <input type="number" id="maxInput" name="maxInput">

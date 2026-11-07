@@ -9,6 +9,10 @@ const settingsIcon = document.getElementById("settingsIcon");
 const maxInput = document.getElementById("maxInput");
 const labelMax = document.getElementById("maxLabel");
 const resetLS = document.getElementById("resetLS");
+const navHome = document.getElementById("navHome");
+const navSettings = document.getElementById("navSettings");
+const navStats = document.getElementById("navStats");
+
 
 
 
@@ -67,13 +71,30 @@ resetLS.addEventListener("click", function () {
 }
 );
 
-
 // ClassList thingy to display different pages
-settingsIcon.addEventListener("click", function() {
+function toggleNav () {
     menu.classList.toggle("active");
-})
+}
 
 
+settingsIcon.addEventListener("click", toggleNav);
+
+
+navHome.addEventListener("click", function() {
+    if(MCBottom.classList.contains("hidden")) {
+        MCBottom.classList.toggle("hidden");
+        settingsContainer.classList.toggle("hidden");
+        toggleNav();
+    }
+});
+
+navSettings.addEventListener("click", function() {
+    if(settingsContainer.classList.contains("hidden")) {
+        MCBottom.classList.toggle("hidden");
+        settingsContainer.classList.toggle("hidden");
+        toggleNav();
+    }
+});
 
 
 
@@ -92,7 +113,5 @@ checkReset();
 maxFluppe = loadData("maxFluppe", 0);
 
 labelFluppe.textContent = count;
-menu.classList.add("hidden");
-settingsContainer.classList.add("hidden");
 labelMax.textContent = maxFluppe;
 maxInput.value = maxFluppe;

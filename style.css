@@ -33,12 +33,11 @@ body {
     flex-direction: column;
     justify-self: center;
     align-items: center;
-    text-align: center;
-    font-size: 2rem;
     background-color: #0d4c70;
     height: 100vh;
     width: 100%;
     max-width: 450px;
+    border-radius: 0 15px 15px 0;
     position: fixed;
     top: 0;
     left: -450px;
@@ -58,9 +57,17 @@ body {
 }
 
 .menu li {
-    color: whitesmoke;
     margin: 20px 0;
 
+}
+
+.menu button {
+    color: whitesmoke;
+    background : none;
+    border: none;
+    font-size: 2rem;
+    width: 100%;
+    max-width: 450px;
 }
 
 .menu li:hover {
@@ -145,4 +152,6 @@ body {
 .hidden {
     display: none;
 }
+
+
 
