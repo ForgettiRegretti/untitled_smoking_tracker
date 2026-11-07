@@ -35,7 +35,7 @@ body {
     align-items: center;
     background-color: #0d4c70;
     height: 100vh;
-    width: 100%;
+    width: 40%;
     max-width: 450px;
     border-radius: 0 15px 15px 0;
     position: fixed;
@@ -76,7 +76,7 @@ body {
 
 .mcTop img {
     padding: 10px 0px 10px 10px;
-    width: min(10dvw, 50px);
+    width: min(15dvw, 80px);
     height: auto;
     position: absolute;
     top: 0;
@@ -110,7 +110,7 @@ body {
 .mcBottom .count_label {
     flex-grow: 0 0 auto;
     color: whitesmoke;
-    font-size: min(5vw, 2rem);
+    font-size: 2rem;
 } 
 
 .mcBottom .fluppen_counter {
@@ -133,6 +133,7 @@ body {
     flex-grow:  0 0 auto;
     padding: 10px;
     color: whitesmoke;
+    text-align: center;
 }
 
 
