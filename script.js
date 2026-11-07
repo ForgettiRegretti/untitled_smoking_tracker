@@ -12,9 +12,10 @@ const resetLS = document.getElementById("resetLS");
 const navHome = document.getElementById("navHome");
 const navSettings = document.getElementById("navSettings");
 const navStats = document.getElementById("navStats");
+const fluppenBergIMG = document.querySelector(".fluppenBerg");
 
 
-
+//fluppenBergIMG.style.transform = "translateY(40%)";
 
 // Functions
 
