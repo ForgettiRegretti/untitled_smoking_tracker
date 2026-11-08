@@ -1,4 +1,4 @@
-let count, lsCount, maxFluppe;
+let count, lsCount, maxFluppe, index, shuffledPhrases;
 
 const buttonFluppe = document.getElementById("fluppenCounter");
 const labelFluppe = document.getElementById("countLabel");
@@ -36,13 +36,15 @@ function saveData(key, value) {
 
 function checkReset() {
     const today = new Date().toDateString();
-    if (localStorage.getItem("lastDate") != today) {
-        localStorage.setItem("lastDate", today);
+    if (loadData("lastDate", null) !== today) {
+        dangerContainer.classList.add("hidden");
         count = 0;
         labelFluppe.textContent = count;
         lsCount.push({ time: Date.now(), "count": 0 });
+        shuffledPhrases = shuffle(meanPhrases);
+        saveData("lastDate", today);
         saveData("lsCount", lsCount);
-        dangerContainer.classList.add("hidden")
+        saveData("shuffledPhrases", shuffledPhrases);   
     }
 };
 
@@ -73,8 +75,7 @@ resetLS.addEventListener("click", function () {
     labelFluppe.textContent = count;
     maxFluppe = 0;
     labelMax.textContent = maxFluppe;
-
-}
+    }
 );
 
 // ClassList thingy to display different pages
@@ -104,7 +105,6 @@ maxInput.addEventListener("change", function() {
 });
 
 // calculate transitionn for animation
-// TODO: resize image
 function getMoving () {
     let percent = 100 - (count / maxFluppe) * 100;
     if(percent >= 0 && percent <= 100){
@@ -146,11 +146,32 @@ const meanPhrases = [
 function princessTreatment() {
     if (count > maxFluppe) {
         dangerContainer.classList.remove("hidden");
-        let index = Math.floor(Math.random() * meanPhrases.length);
-        let newPhrase = meanPhrases[index];
-        phrase.textContent = newPhrase;
+        phrase.textContent = nextPhrase();
     }
 };
+
+function nextPhrase() {
+    index = loadData("index", 0);
+    shuffledPhrases = loadData("shuffledPhrases", []);
+    if (shuffledPhrases.length === 0) {
+        shuffledPhrases = shuffle(meanPhrases);};
+    const phrase = shuffledPhrases[index];
+    index = (index + 1) % shuffledPhrases.length;
+    saveData("index", index);
+    return phrase;
+}
+
+function shuffle(array) {
+    const copy = [...array];
+    for (let i = copy.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+}
+
+
+
 
 // initial page load
 
