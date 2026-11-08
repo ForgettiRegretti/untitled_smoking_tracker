@@ -42,6 +42,7 @@ function checkReset() {
         labelFluppe.textContent = count;
         lsCount.push({ time: Date.now(), "count": 0 });
         saveData("lsCount", lsCount);
+        dangerContainer.classList.add("hidden")
     }
 };
 
@@ -84,19 +85,15 @@ function toggleNav () {
 }
 
 navHome.addEventListener("click", function() {
-    if(MCBottom.classList.contains("hidden")) {
-        MCBottom.classList.toggle("hidden");
-        settingsContainer.classList.toggle("hidden");
-        toggleNav();
-    }
+    MCBottom.classList.toggle("hidden");
+    settingsContainer.classList.toggle("hidden");
+    toggleNav();
 });
 
 navSettings.addEventListener("click", function() {
-    if(settingsContainer.classList.contains("hidden")) {
-        MCBottom.classList.toggle("hidden");
-        settingsContainer.classList.toggle("hidden");
-        toggleNav();
-    }
+    MCBottom.classList.toggle("hidden");
+    settingsContainer.classList.toggle("hidden");
+    toggleNav();
 });
 
 // update max fluppen
@@ -144,7 +141,8 @@ const meanPhrases = [
     "Oh my god. Just stop, okay?",
     "Why are you so weak?"
 ];
-    
+
+// TODO find a different random method, maybe only once a day?
 function princessTreatment() {
     if (count > maxFluppe) {
         dangerContainer.classList.remove("hidden");

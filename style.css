@@ -140,11 +140,11 @@ body {
 .danger {
     position: absolute;
     inset: 28% 2% 48%;
-    display: flex;               /* makes align-items work */
-    align-items: center;         /* vertical centering */
-    justify-content: center;     /* horizontal centering */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
-    background-color: red;
+    background-color: firebrick;
     text-align: center;
     font-size: 2rem;
     border-radius: 10px; 
