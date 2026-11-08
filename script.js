@@ -102,7 +102,8 @@ maxInput.addEventListener("change", function() {
     saveData("maxFluppe", maxFluppe);
 });
 
-// calculate transitionn for animation 
+// calculate transitionn for animation
+// TODO: resize image
 function getMoving () {
     let percent = 100 - (count / maxFluppe) * 100;
     if(percent >= 0 && percent <= 100){
