@@ -3,7 +3,7 @@ let count, lsCount, maxFluppe, index, shuffledPhrases;
 const buttonFluppe = document.getElementById("fluppenCounter");
 const labelFluppe = document.getElementById("countLabel");
 const MCBottom = document.getElementById("MCBottom");
-const settingsContainer = document.getElementById("settings");
+const settingsPage = document.getElementById("settingsPage");
 const menu = document.querySelector('.menu');
 const settingsIcon = document.getElementById("settingsIcon");
 const maxInput = document.getElementById("maxInput");
@@ -15,6 +15,7 @@ const navStats = document.getElementById("navStats");
 const fluppenBergIMG = document.querySelector(".fluppenBerg");
 const phrase = document.getElementById("phrase");
 const dangerContainer = document.getElementById("danger");
+const statsPage = document.getElementById("statsPage");
 
 
 // Functions
@@ -62,8 +63,7 @@ buttonFluppe.addEventListener("click", function () {
     lsCount.push({ time: Date.now(), "count": count });
     saveData("lsCount", lsCount);
     getMoving();
-    princessTreatment();
-    
+    princessTreatment();  
 });
 
 // reset button
@@ -86,16 +86,28 @@ function toggleNav () {
 }
 
 navHome.addEventListener("click", function() {
-    MCBottom.classList.toggle("hidden");
-    settingsContainer.classList.toggle("hidden");
+    MCBottom.classList.remove("hidden");
+    settingsPage.classList.add("hidden");
+    statsPage.classList.add("hidden");
     toggleNav();
 });
 
 navSettings.addEventListener("click", function() {
-    MCBottom.classList.toggle("hidden");
-    settingsContainer.classList.toggle("hidden");
+    MCBottom.classList.add("hidden");
+    settingsPage.classList.remove("hidden");
+    statsPage.classList.add("hidden");
     toggleNav();
 });
+
+navStats.addEventListener("click", function() {
+    MCBottom.classList.add("hidden");
+    settingsPage.classList.add("hidden");
+    statsPage.classList.remove("hidden");
+    toggleNav();
+})
+
+
+
 
 // update max fluppen
 maxInput.addEventListener("change", function() {
@@ -135,14 +147,13 @@ const meanPhrases = [
     "One day your lungs will fail, just like you did today.",
     "Your lungs are working overtime. You, on the other hand, achieved nothing.",
     "Another pack gone, and so is your money. And health. And your youthful appearance.",
-    "But you promised to quit. You promised!",
     "Out of breath? Your budding COPD is showing.",
     "I can't believe you've done that.",
     "Oh my god. Just stop, okay?",
-    "Why are you so weak?"
+    "Why are you so weak?",
+    ":("
 ];
 
-// TODO find a different random method, maybe only once a day?
 function princessTreatment() {
     if (count > maxFluppe) {
         dangerContainer.classList.remove("hidden");
@@ -150,6 +161,8 @@ function princessTreatment() {
     }
 };
 
+
+// TODO add function that calculates spend money
 function nextPhrase() {
     index = loadData("index", 0);
     shuffledPhrases = loadData("shuffledPhrases", []);
@@ -171,9 +184,6 @@ function shuffle(array) {
 }
 
 
-
-
-// initial page load
 
 lsCount = loadData("lsCount", []);
 count = lsCount.length > 0 ? lsCount[lsCount.length - 1].count : 0;

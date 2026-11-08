@@ -16,7 +16,10 @@
     <title>Untitled smoking tracker</title>
 
     <link rel="stylesheet" href="style.css">
-    <script src="script.js" defer></script>
+    <script 
+        src="script.js" defer>
+        src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"
+    </script>
 
 </head>
 
@@ -56,13 +59,19 @@
 
         
 
-        <div class="settingsContainer hidden" id="settings">
+        <div class="settingsPage hidden" id="settingsPage">
             <h2>Settings</h2>
             <label for="maxInput">Max Fluppen pro tag:</label>
             <input type="number" id="maxInput" name="maxInput" min="0" step="1" inputmode="numeric">
             <button id="resetLS">reset localStorage</button>
         </div>
         
+
+
+        <div class="stats hidden" id="statsPage">
+             <canvas id="testChart" style="width:100%;max-width:700px"></canvas> 
+        </div>
+
     </div>
 
 </body>

@@ -125,7 +125,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: contain;
-    transform: translateY(100%); /* this needs to be changed */
+    transform: translateY(100%);
     transition: transform 2s ease-out;
 }
 
@@ -184,17 +184,29 @@ body {
 }
 
 
-.settingsContainer {
+.settingsPage {
     display: flex;
     flex-direction: column;
     align-items: normal;
-    flex: 1;              /* take all space left below .mcTop */
-    min-height: 0;        /* allow shrinking */
+    flex: 1;
+    min-height: 0;
     gap: 15px;           
     padding: 15px;
     box-sizing: border-box;
     color: whitesmoke;
  
+}
+
+.settingsPage {
+    display: flex;
+    flex-direction: column;
+    align-items: normal;
+    flex: 1;
+    min-height: 0;
+    gap: 15px;           
+    padding: 15px;
+    box-sizing: border-box;
+    color: whitesmoke;
 }
 
 .hidden {
