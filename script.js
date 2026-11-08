@@ -13,6 +13,8 @@ const navHome = document.getElementById("navHome");
 const navSettings = document.getElementById("navSettings");
 const navStats = document.getElementById("navStats");
 const fluppenBergIMG = document.querySelector(".fluppenBerg");
+const phrase = document.getElementById("phrase");
+const dangerContainer = document.getElementById("danger");
 
 
 // Functions
@@ -57,6 +59,8 @@ buttonFluppe.addEventListener("click", function () {
     lsCount.push({ time: Date.now(), "count": count });
     saveData("lsCount", lsCount);
     getMoving();
+    princessTreatment();
+    
 });
 
 // reset button
@@ -111,6 +115,45 @@ function getMoving () {
     }
 };
 
+// neatly displayed on failure
+const meanPhrases = [
+    "Yeah, why stop here, right?",
+    "Is this really your best? Oh, well.",
+    "I smell something... ah, yes, failure.",
+    "Congratulations. You failed. Again.",
+    "Maybe next time. Or maybe not.",
+    "That went exactly as I expected: badly.",
+    "You really gave it your... average effort.",
+    "Don't give up! Oh wait, you already did.",
+    "So close! Well, not really, but it sounds nicer.",
+    "What a disappointment you are.",
+    "Well, that was... something.",
+    "I had such high hopes. Silly me.",
+    "Interesting strategy. Did you plan to lose?",
+    "That's okay. Not everyone can be good at everything.",
+    "I'd say try again, but let's be realistic.",
+    "Don't worry, failure suits you.",
+    "Lung cancer says hello. It's excited to meet you!",
+    "What is the goal here? Emphysema?",
+    "One day your lungs will fail, just like you did today.",
+    "Your lungs are working overtime. You, on the other hand, achieved nothing.",
+    "Another pack gone, and so is your money. And health. And your youthful appearance.",
+    "But you promised to quit. You promised!",
+    "Out of breath? Your budding COPD is showing.",
+    "I can't believe you've done that.",
+    "Oh my god. Just stop, okay?",
+    "Why are you so weak?"
+];
+    
+function princessTreatment() {
+    if (count > maxFluppe) {
+        dangerContainer.classList.remove("hidden");
+        let index = Math.floor(Math.random() * meanPhrases.length);
+        let newPhrase = meanPhrases[index];
+        phrase.textContent = newPhrase;
+    }
+};
+
 // initial page load
 
 lsCount = loadData("lsCount", []);
@@ -122,3 +165,4 @@ labelFluppe.textContent = count;
 labelMax.textContent = maxFluppe;
 maxInput.value = maxFluppe;
 getMoving();
+princessTreatment()
