@@ -1,54 +1,32 @@
 let count, history, maxFluppe, index, shuffledPhrases;
 
-const buttonFluppe = document.getElementById("fluppenCounter");
-const labelFluppe = document.getElementById("countLabel");
-const MCBottom = document.getElementById("MCBottom");
-const settingsPage = document.getElementById("settingsPage");
+//Navigation
 const menu = document.querySelector('.menu');
-const settingsIcon = document.getElementById("settingsIcon");
-const maxInput = document.getElementById("maxInput");
-const labelMax = document.getElementById("maxLabel");
-const resetLS = document.getElementById("resetLS");
 const navHome = document.getElementById("navHome");
 const navSettings = document.getElementById("navSettings");
 const navStats = document.getElementById("navStats");
+const settingsIcon = document.getElementById("settingsIcon");
+
+//Pages & Container
+const mainPage = document.getElementById("mainPage");
+const settingsPage = document.getElementById("settingsPage");
+const statsPage = document.getElementById("statsPage");
+const dangerContainer = document.getElementById("danger");
+
+
+//Counting and displaying value
+const buttonFluppe = document.getElementById("fluppenCounter");
+const labelFluppe = document.getElementById("countLabel");
+const maxInput = document.getElementById("maxInput");
+const labelMax = document.getElementById("maxLabel");
+
+//misc
 const fluppenBergIMG = document.querySelector(".fluppenBerg");
 const phrase = document.getElementById("phrase");
-const dangerContainer = document.getElementById("danger");
-const statsPage = document.getElementById("statsPage");
+const resetLS = document.getElementById("resetLS");
 
 
-// Functions
-
-//Storage helper
-function loadData (key, fallback) {
-    try {
-        const rawData = localStorage.getItem(key)
-        return rawData ? JSON.parse(rawData) : fallback
-    }
-    catch (e) {
-        return fallback
-    }
-};
-
-function saveData(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
-};
-
-function checkReset() {
-    const today = new Date().toDateString();
-    if (loadData("lastDate", null) !== today) {
-        dangerContainer.classList.add("hidden");
-        updateHistory();
-        count = 0;
-        labelFluppe.textContent = count;
-        shuffledPhrases = shuffle(meanPhrases);
-        saveData("lastDate", today);
-        saveData("count", count);
-        saveData("shuffledPhrases", shuffledPhrases);   
-    }
-};
-
+//EventListener
 document.addEventListener("visibilitychange", function() {
     if(document.visibilityState === "visible") {
         checkReset();
@@ -83,6 +61,7 @@ resetLS.addEventListener("click", function () {
     }
 );
 
+
 // ClassList thingy to display different pages
 // nothing to see here, just perfectly written and efficient code
 // TODO add navStats
@@ -91,28 +70,25 @@ function toggleNav () {
 }
 
 navHome.addEventListener("click", function() {
-    MCBottom.classList.remove("hidden");
+    mainPage.classList.remove("hidden");
     settingsPage.classList.add("hidden");
     statsPage.classList.add("hidden");
     toggleNav();
 });
 
 navSettings.addEventListener("click", function() {
-    MCBottom.classList.add("hidden");
+    mainPage.classList.add("hidden");
     settingsPage.classList.remove("hidden");
     statsPage.classList.add("hidden");
     toggleNav();
 });
 
 navStats.addEventListener("click", function() {
-    MCBottom.classList.add("hidden");
+    mainPage.classList.add("hidden");
     settingsPage.classList.add("hidden");
     statsPage.classList.remove("hidden");
     toggleNav();
 })
-
-
-
 
 // update max fluppen
 maxInput.addEventListener("change", function() {
@@ -121,7 +97,43 @@ maxInput.addEventListener("change", function() {
     saveData("maxFluppe", maxFluppe);
 });
 
-// calculate transitionn for animation
+settingsIcon.addEventListener("click", toggleNav);
+
+
+
+// Functions
+
+//Storage helper
+function loadData (key, fallback) {
+    try {
+        const rawData = localStorage.getItem(key)
+        return rawData ? JSON.parse(rawData) : fallback
+    }
+    catch (e) {
+        return fallback
+    }
+};
+
+function saveData(key, value) {
+    localStorage.setItem(key, JSON.stringify(value));
+};
+
+function checkReset() {
+    const today = new Date().toDateString();
+    if (loadData("lastDate", null) !== today) {
+        dangerContainer.classList.add("hidden");
+        updateHistory();
+        count = 0;
+        labelFluppe.textContent = count;
+        shuffledPhrases = shuffle(meanPhrases);
+        saveData("lastDate", today);
+        saveData("count", count);
+        saveData("shuffledPhrases", shuffledPhrases);   
+    }
+};
+
+
+// calculate transition for animation
 function getMoving () {
     let percent = 100 - (count / maxFluppe) * 100;
     if(percent >= 0 && percent <= 100){
@@ -129,7 +141,7 @@ function getMoving () {
     }
 };
 
-// neatly displayed on failure
+// scolding phrases, neatly displayed on failure
 const meanPhrases = [
     "Yeah, why stop here, right?",
     "Is this really your best? Oh, well.",
@@ -189,58 +201,9 @@ function shuffle(array) {
 }
 
 
-
-
-//--------------------test Chart------------------------------------
-
-function extractHistory() {
-    const historyData = loadData("history", []);
-    const labelDate = [];
-    const countData = [];
-    for (let obj of historyData) {
-        labelDate.push(obj["time"]);
-        countData.push(obj["count"]);
-    }
-    return [labelDate, countData];
-}
-
-
-const ctx = document.getElementById("testChart");
-
-const myChart = new Chart(ctx, {
-  type: "bar",
-  data: {
-    labels: [],
-    datasets: [
-      {
-        label: "Count per day",
-        data: [],
-      },
-    ],
-  },
-  options: {
-    scales: {
-      y: { beginAtZero: true },
-    },
-  },
-});
-
-function updateChart(newLabels, newValues) {
-    myChart.data.labels = newLabels;
-    myChart.data.datasets[0].data = newValues;
-    myChart.update();
-};
-
-const [labels, values] = extractHistory();
-updateChart(labels, values);
-
-//-----------------------------------------------------------------------/*/
-
-
-count = loadData("count", 0)
 checkReset();
+count = loadData("count", 0)
 maxFluppe = loadData("maxFluppe", 0);
-settingsIcon.addEventListener("click", toggleNav);
 labelFluppe.textContent = count;
 labelMax.textContent = maxFluppe;
 maxInput.value = maxFluppe;

@@ -6,8 +6,6 @@ body {
     background-color: #0198F1;
 }
 
-
-
 .main_container {
     display: flex;
     flex-direction: column;
@@ -26,6 +24,8 @@ body {
     box-sizing: border-box;
 }
 
+
+/*---------------------------- Navigation -----------------------------------------*/
 .mcTop .menu {
     display: flex;
     flex-direction: column;
@@ -83,13 +83,14 @@ body {
     left: 0;
 }
 
+/*---------------------------- Main Page -----------------------------------------*/
 .mcTop h1 {
     padding: 0 10px;
     text-align: center;
     color: whitesmoke;
 }
 
-.mcBottom {
+.mainPage {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -154,13 +155,13 @@ body {
     margin: 0;
 }
 
-.mcBottom .count_label {
+.mainPage .count_label {
     flex-grow: 0 0 auto;
     color: whitesmoke;
     font-size: 2rem;
 } 
 
-.mcBottom .fluppen_counter {
+.mainPage .fluppen_counter {
     flex-grow:  0 0 auto;
     box-sizing: border-box;
     width: min(40vw, 150px);
@@ -176,14 +177,14 @@ body {
     height: auto;
 }
 
-.mcBottom .quote {
+.mainPage .quote {
     flex-grow:  0 0 auto;
     padding: 10px;
     color: whitesmoke;
     text-align: center;
 }
 
-
+/*--------------------------------- Settings -----------------------------------*/
 .settingsPage {
     display: flex;
     flex-direction: column;
@@ -194,14 +195,6 @@ body {
     padding: 15px;
     box-sizing: border-box;
     color: whitesmoke;
- 
-}
-
-.stats {
-  position: relative;
-  width: 100%;
-  max-width: 400px;
-  height: 300px;
 }
 
 .hidden {
