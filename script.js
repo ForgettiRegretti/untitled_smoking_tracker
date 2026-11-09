@@ -1,4 +1,6 @@
-let count, lsCount, maxFluppe, index, shuffledPhrases;
+let count, history, maxFluppe, index, shuffledPhrases;
+
+const today = new Date().toDateString();
 
 const buttonFluppe = document.getElementById("fluppenCounter");
 const labelFluppe = document.getElementById("countLabel");
@@ -36,15 +38,14 @@ function saveData(key, value) {
 };
 
 function checkReset() {
-    const today = new Date().toDateString();
     if (loadData("lastDate", null) !== today) {
         dangerContainer.classList.add("hidden");
+        updateHistory();
         count = 0;
         labelFluppe.textContent = count;
-        lsCount.push({ time: Date.now(), "count": 0 });
         shuffledPhrases = shuffle(meanPhrases);
         saveData("lastDate", today);
-        saveData("lsCount", lsCount);
+        saveData("count", count);
         saveData("shuffledPhrases", shuffledPhrases);   
     }
 };
@@ -60,13 +61,18 @@ document.addEventListener("visibilitychange", function() {
 buttonFluppe.addEventListener("click", function () {
     count += 1;
     labelFluppe.textContent = count;
-    lsCount.push({ time: Date.now(), "count": count });
-    saveData("lsCount", lsCount);
+    saveData("count", count);
     getMoving();
     princessTreatment();  
 });
 
-// reset button
+function updateHistory() {
+    history = [];
+    history.push({"time": today, "count": count});
+    saveData("history", history);
+};
+
+// reset locaStorage
 resetLS.addEventListener("click", function () {
     localStorage.removeItem("lsCount");
     localStorage.removeItem("maxFluppe")
@@ -75,6 +81,7 @@ resetLS.addEventListener("click", function () {
     labelFluppe.textContent = count;
     maxFluppe = 0;
     labelMax.textContent = maxFluppe;
+    //    localStorage.setItem("lastDate", "Fri Nov 06 2026")
     }
 );
 
@@ -184,9 +191,46 @@ function shuffle(array) {
 }
 
 
+/*/--------------------test Chart------------------------------------
+let timeStamps = []
 
-lsCount = loadData("lsCount", []);
-count = lsCount.length > 0 ? lsCount[lsCount.length - 1].count : 0;
+for(let obj of lsCount) {
+    let stamp = obj["time"]
+    timeStamps = new array (stamp.getMonth().getDate()); 
+}
+
+
+
+const ctx = document.getElementById("testChart");
+
+const myChart = new Chart(ctx, {
+  type: "bar",
+  data: {
+    labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    datasets: [
+      {
+        label: "Count per day",
+        data: [5, 3, 8, 2, 6],
+      },
+    ],
+  },
+  options: {
+    scales: {
+      y: { beginAtZero: true },
+    },
+  },
+});
+
+function updateChart(newLabels, newValues) {
+    myChart.data.labels = newLabels;
+    myChart.data.datasets[0].data = newValues;
+    myChart.update();
+}
+
+//-----------------------------------------------------------------------/*/
+
+
+count = loadData("count", 0)
 checkReset();
 maxFluppe = loadData("maxFluppe", 0);
 settingsIcon.addEventListener("click", toggleNav);
