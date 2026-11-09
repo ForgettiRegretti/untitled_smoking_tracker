@@ -1,7 +1,5 @@
 let count, history, maxFluppe, index, shuffledPhrases;
 
-const today = new Date().toDateString();
-
 const buttonFluppe = document.getElementById("fluppenCounter");
 const labelFluppe = document.getElementById("countLabel");
 const MCBottom = document.getElementById("MCBottom");
@@ -38,6 +36,7 @@ function saveData(key, value) {
 };
 
 function checkReset() {
+    const today = new Date().toDateString();
     if (loadData("lastDate", null) !== today) {
         dangerContainer.classList.add("hidden");
         updateHistory();
@@ -67,10 +66,10 @@ buttonFluppe.addEventListener("click", function () {
 });
 
 function updateHistory() {
-    history = [];
-    history.push({"time": today, "count": count});
-    saveData("history", history);
-};
+    const historyData = loadData("history", []);
+    historyData.push({ time: loadData("lastDate", today), "count": count });
+    saveData("history", historyData);
+}
 
 // reset locaStorage
 resetLS.addEventListener("click", function () {
@@ -191,14 +190,20 @@ function shuffle(array) {
 }
 
 
-/*/--------------------test Chart------------------------------------
-let timeStamps = []
 
-for(let obj of lsCount) {
-    let stamp = obj["time"]
-    timeStamps = new array (stamp.getMonth().getDate()); 
+
+//--------------------test Chart------------------------------------
+
+function extractHistory() {
+    const historyData = loadData("history", []);
+    const labelDate = [];
+    const countData = [];
+    for (let obj of historyData) {
+        labelDate.push(obj["time"]);
+        countData.push(obj["count"]);
+    }
+    return [labelDate, countData];
 }
-
 
 
 const ctx = document.getElementById("testChart");
@@ -206,11 +211,11 @@ const ctx = document.getElementById("testChart");
 const myChart = new Chart(ctx, {
   type: "bar",
   data: {
-    labels: ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    labels: [],
     datasets: [
       {
         label: "Count per day",
-        data: [5, 3, 8, 2, 6],
+        data: [],
       },
     ],
   },
@@ -225,7 +230,10 @@ function updateChart(newLabels, newValues) {
     myChart.data.labels = newLabels;
     myChart.data.datasets[0].data = newValues;
     myChart.update();
-}
+};
+
+const [labels, values] = extractHistory();
+updateChart(labels, values);
 
 //-----------------------------------------------------------------------/*/
 
