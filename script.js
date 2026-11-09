@@ -67,15 +67,14 @@ buttonFluppe.addEventListener("click", function () {
 
 function updateHistory() {
     const historyData = loadData("history", []);
-    historyData.push({ time: loadData("lastDate", today), "count": count });
+    historyData.push({ "time": loadData("lastDate", new Date().toDateString()), "count": count });
     saveData("history", historyData);
 }
 
 // reset locaStorage
 resetLS.addEventListener("click", function () {
     localStorage.removeItem("lsCount");
-    localStorage.removeItem("maxFluppe")
-    lsCount = [];
+    localStorage.removeItem("maxFluppe");
     count = 0;
     labelFluppe.textContent = count;
     maxFluppe = 0;
