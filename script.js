@@ -24,6 +24,9 @@ const labelMax = document.getElementById("maxLabel");
 const fluppenBergIMG = document.querySelector(".fluppenBerg");
 const phrase = document.getElementById("phrase");
 const resetLS = document.getElementById("resetLS");
+const ctx = document.getElementById("testChart");
+
+
 
 
 //EventListener
@@ -51,13 +54,19 @@ function updateHistory() {
 
 // reset locaStorage
 resetLS.addEventListener("click", function () {
-    localStorage.removeItem("lsCount");
+    localStorage.removeItem("count");
     localStorage.removeItem("maxFluppe");
+    localStorage.removeItem("history");
+    localStorage.removeItem("lastDate");
+    localStorage.removeItem("index");
     count = 0;
     labelFluppe.textContent = count;
     maxFluppe = 0;
     labelMax.textContent = maxFluppe;
     //    localStorage.setItem("lastDate", "Fri Nov 06 2026")
+    /*/ test history 
+    localStorage.setItem("history", JSON.stringify([{"time":"Mon Nov 09 2026","count":10}, {"time":"Sun Nov 08 2026","count":14}, {"time":"Sat Nov 07 2026","count":8}])); 
+    */
     }
 );
 
@@ -88,6 +97,10 @@ navStats.addEventListener("click", function() {
     settingsPage.classList.add("hidden");
     statsPage.classList.remove("hidden");
     toggleNav();
+
+    const [labels, values] = extractHistory();
+    updateChart(labels, values);
+    myChart.resize();
 })
 
 // update max fluppen
@@ -200,12 +213,53 @@ function shuffle(array) {
     return copy;
 }
 
+function extractHistory() {
+    const historyData = loadData("history", []);
+    const labelDate = [];
+    const countData = [];
+    for (let obj of historyData) {
+        labelDate.push(obj["time"]);
+        countData.push(obj["count"]);
+    }
+    return [labelDate, countData];
+}
 
-checkReset();
+if (typeof Chart !== "undefined") {
+
+    const myChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+        labels: [],
+        datasets: [
+        {
+            label: "Count per day",
+            data: [],
+        },
+        ],
+    },
+    options: {
+        scales: {
+        y: { beginAtZero: true },
+        },
+    },
+    });
+
+    function updateChart(newLabels, newValues) {
+        myChart.data.labels = newLabels;
+        myChart.data.datasets[0].data = newValues;
+        myChart.update();
+    };
+
+    
+}
+
+
+
 count = loadData("count", 0)
 maxFluppe = loadData("maxFluppe", 0);
 labelFluppe.textContent = count;
 labelMax.textContent = maxFluppe;
 maxInput.value = maxFluppe;
+checkReset();
 getMoving();
 princessTreatment()
