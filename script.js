@@ -1,4 +1,4 @@
-let count, history, maxFluppe, index, shuffledPhrases;
+let count, history, maxFluppe, costFluppe, moneyWasted, index, shuffledPhrases;
 
 //Navigation
 const menu = document.querySelector('.menu');
@@ -18,12 +18,17 @@ const dangerContainer = document.getElementById("danger");
 const buttonFluppe = document.getElementById("fluppenCounter");
 const labelFluppe = document.getElementById("countLabel");
 const maxInput = document.getElementById("maxInput");
+const costFluppeInput = document.getElementById("costFluppe");
 const labelMax = document.getElementById("maxLabel");
+const radioMoney = document.getElementById("radioMoney");
+const radioQuote = document.getElementById("radioQuote");
 
 //misc
 const fluppenBergIMG = document.querySelector(".fluppenBerg");
 const phrase = document.getElementById("phrase");
 const resetLS = document.getElementById("resetLS");
+const resetHistory = document.getElementById("resetHistory");
+const testHistory = document.getElementById("testHistory");
 const ctx = document.getElementById("testChart");
 
 
@@ -63,12 +68,22 @@ resetLS.addEventListener("click", function () {
     labelFluppe.textContent = count;
     maxFluppe = 0;
     labelMax.textContent = maxFluppe;
-    //    localStorage.setItem("lastDate", "Fri Nov 06 2026")
-    /*/ test history 
-    localStorage.setItem("history", JSON.stringify([{"time":"Mon Nov 09 2026","count":10}, {"time":"Sun Nov 08 2026","count":14}, {"time":"Sat Nov 07 2026","count":8}])); 
-    */
     }
 );
+
+resetHistory.addEventListener("click", function() {
+    localStorage.removeItem("history")
+});
+
+testHistory.addEventListener("click", function() {
+    if (loadData("history").length === 0) {
+        localStorage.setItem("history", JSON.stringify([{"time":"Mon Nov 09 2026","count":10}, {"time":"Sun Nov 08 2026","count":14}, {"time":"Sat Nov 07 2026","count":8}])); 
+    }
+});
+
+//radioMoney.addEventListener("change", function{
+    //morgen, morgen, nur nicht heute
+//})
 
 
 // ClassList thingy to display different pages
@@ -101,7 +116,10 @@ navStats.addEventListener("click", function() {
         const [labels, values] = extractHistory();
         updateChart(labels, values);
     }
-})
+});
+
+settingsIcon.addEventListener("click", toggleNav);
+
 
 // update max fluppen
 maxInput.addEventListener("change", function() {
@@ -110,7 +128,10 @@ maxInput.addEventListener("change", function() {
     saveData("maxFluppe", maxFluppe);
 });
 
-settingsIcon.addEventListener("click", toggleNav);
+costFluppeInput.addEventListener("change", function() {
+    costFluppe = Number(costFluppeInput.value);
+    saveData("costFluppe", costFluppe);
+})
 
 
 
@@ -266,6 +287,7 @@ if (typeof Chart !== "undefined") {
 
 count = loadData("count", 0)
 maxFluppe = loadData("maxFluppe", 0);
+costFluppe = loadData("costFluppe", 0);
 labelFluppe.textContent = count;
 labelMax.textContent = maxFluppe;
 maxInput.value = maxFluppe;
