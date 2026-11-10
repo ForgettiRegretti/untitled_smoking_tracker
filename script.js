@@ -97,10 +97,10 @@ navStats.addEventListener("click", function() {
     settingsPage.classList.add("hidden");
     statsPage.classList.remove("hidden");
     toggleNav();
-
-    const [labels, values] = extractHistory();
-    updateChart(labels, values);
-    myChart.resize();
+    if (typeof Chart !== "undefined") {
+        const [labels, values] = extractHistory();
+        updateChart(labels, values);
+    }
 })
 
 // update max fluppen
@@ -224,9 +224,10 @@ function extractHistory() {
     return [labelDate, countData];
 }
 
+
 if (typeof Chart !== "undefined") {
 
-    const myChart = new Chart(ctx, {
+    const testChart = new Chart(ctx, {
     type: "bar",
     data: {
         labels: [],
@@ -236,31 +237,13 @@ if (typeof Chart !== "undefined") {
                 data: [],
                 borderColor: "#999",
                 borderWidth: 1,
-                borderRadius: 3,
+                borderRadius: 5,
                 borderSkipped: false,
                 maxBarThickness: 28,
-                backgroundColor: function (context) {
-                const bar = context.element;
-                if (!bar || typeof bar.getProps !== "function") return "#f5f5f0";  // no real bar (for example the legend)
-
-                const { ctx } = context.chart;
-                const { y, base } = bar.getProps(["y", "base"], true);
-                if (y === base) return "#f5f5f0";   // bar has no height yet
-
-                const g = ctx.createLinearGradient(0, base, 0, y);
-                g.addColorStop(0,    "#e8a24a");  // filter
-                g.addColorStop(0.18, "#e8a24a");
-                g.addColorStop(0.18, "#b9722a");  // thin line
-                g.addColorStop(0.20, "#b9722a");
-                g.addColorStop(0.20, "#f5f5f0");  // paper
-                g.addColorStop(0.92, "#f5f5f0");
-                g.addColorStop(0.92, "#ff5a1f");  // glowing end
-                g.addColorStop(1,    "#ff5a1f");
-                return g;
+                backgroundColor: "#f5f5f5",
                 },
-            },
             ],
-        },
+    },
 
     options: {
         scales: {
@@ -270,13 +253,14 @@ if (typeof Chart !== "undefined") {
     },);
 
     function updateChart(newLabels, newValues) {
-        myChart.data.labels = newLabels;
-        myChart.data.datasets[0].data = newValues;
-        myChart.update();
+    testChart.data.labels = newLabels;
+    testChart.data.datasets[0].data = newValues;
+    testChart.update();
     };
+};
 
 
-}
+
 
 
 
@@ -287,4 +271,4 @@ labelMax.textContent = maxFluppe;
 maxInput.value = maxFluppe;
 checkReset();
 getMoving();
-princessTreatment()
+princessTreatment();

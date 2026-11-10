@@ -204,6 +204,11 @@ body {
   height: 300px;
 }
 
+.testChart {
+    width:100%;
+    max-width:700px
+}
+
 .hidden {
     display: none;
 }
