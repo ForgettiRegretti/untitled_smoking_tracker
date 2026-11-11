@@ -53,8 +53,8 @@
             <button class="fluppen_counter" id="fluppenCounter">
                 <img src="./Images/IMG_fluppenButton.png" alt="fluppe button">
             </button>
-            <p class="quote">"If i can't smoke in heaven, I shall not go" - Mark Twain</p>
-            <p class="moneyWastedToday hidden"><span id="moneyWastedToday">0.00</span> Euro</p>
+            <p class="quote hidden" id="quote">"If i can't smoke in heaven, I shall not go" - Mark Twain</p>
+            <p id="moneyWastedContainer"><span id="moneyWastedLabel">0.00</span> Euro</p>
         </div>
 
         <div class="settingsPage hidden" id="settingsPage">
@@ -62,7 +62,7 @@
             <label for="maxInput">Max Fluppen pro tag:</label>
             <input type="number" id="maxInput" name="maxInput" value="10" min="0" step="1" inputmode="numeric">
             <label for="costFluppe"> kosten fuer einzelne fluppe</label>
-            <input type="number" id="costFluppe" name="costFluppe" value="0.45" min="0" inputmode="numeric">
+            <input type="number" id="costFluppe" name="costFluppe" value="0.00" min="0" inputmode="numeric">
             <button id="resetLS">reset localStorage</button>
             <button id="resetHistory">reset history</button>
             <button id="testHistory">add test history to localStorage</button>

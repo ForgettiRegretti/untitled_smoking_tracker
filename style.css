@@ -184,7 +184,7 @@ body {
     text-align: center;
 }
 
-.moneyWastedToday {
+#moneyWastedContainer {
     flex-grow:  0 0 auto;
     padding: 10px;
     color: whitesmoke;

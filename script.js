@@ -1,4 +1,4 @@
-let count, history, maxFluppe, costFluppe, moneyWasted, index, shuffledPhrases;
+let count, history, maxFluppe, cost, index, shuffledPhrases;
 
 //Navigation
 const menu = document.querySelector('.menu');
@@ -12,6 +12,7 @@ const mainPage = document.getElementById("mainPage");
 const settingsPage = document.getElementById("settingsPage");
 const statsPage = document.getElementById("statsPage");
 const dangerContainer = document.getElementById("danger");
+const moneyWastedContainer = document.getElementById("moneyWastedContainer");
 
 
 //Counting and displaying value
@@ -20,8 +21,10 @@ const labelFluppe = document.getElementById("countLabel");
 const maxInput = document.getElementById("maxInput");
 const costFluppeInput = document.getElementById("costFluppe");
 const labelMax = document.getElementById("maxLabel");
-const radioMoney = document.getElementById("radioMoney");
-const radioQuote = document.getElementById("radioQuote");
+const radioMoneyQuote = document.querySelectorAll('input[name="footnote"]');
+const quote = document.getElementById("quote");
+const moneyWastedLabel = document.getElementById("moneyWastedLabel");
+
 
 //misc
 const fluppenBergIMG = document.querySelector(".fluppenBerg");
@@ -46,9 +49,10 @@ document.addEventListener("visibilitychange", function() {
 buttonFluppe.addEventListener("click", function () {
     count += 1;
     labelFluppe.textContent = count;
+    moneyWastedLabel.textContent = moneyWasteTodayCalc();
     saveData("count", count);
     getMoving();
-    princessTreatment();  
+    princessTreatment(); 
 });
 
 function updateHistory() {
@@ -81,9 +85,21 @@ testHistory.addEventListener("click", function() {
     }
 });
 
-//radioMoney.addEventListener("change", function{
-    //morgen, morgen, nur nicht heute
-//})
+for (const radioButton of radioMoneyQuote) {
+    radioButton.addEventListener("change", function() {
+        if (radioButton.checked && radioButton.value === "radioQuote") {
+            quote.classList.remove("hidden");
+            moneyWastedContainer.classList.add("hidden");
+        }
+        else if (radioButton.checked && radioButton.value === "radioMoney") {
+            quote.classList.add("hidden");
+            moneyWastedContainer.classList.remove("hidden");
+            moneyWasteTodayCalc();
+        }
+    });
+};
+
+
 
 
 // ClassList thingy to display different pages
@@ -131,6 +147,7 @@ maxInput.addEventListener("change", function() {
 costFluppeInput.addEventListener("change", function() {
     costFluppe = Number(costFluppeInput.value);
     saveData("costFluppe", costFluppe);
+    moneyWastedLabel.textContent = moneyWasteTodayCalc();
 })
 
 
@@ -212,8 +229,6 @@ function princessTreatment() {
     }
 };
 
-
-// TODO add function that calculates spend money
 function nextPhrase() {
     index = loadData("index", 0);
     shuffledPhrases = loadData("shuffledPhrases", []);
@@ -245,7 +260,15 @@ function extractHistory() {
     return [labelDate, countData];
 }
 
+function moneyWasteTodayCalc() {
+    costFluppe = loadData("costFluppe", 0);
+    cost = costFluppe * count;
+    return cost
+};
 
+
+
+//------------------- Chart ----------------
 if (typeof Chart !== "undefined") {
 
     const testChart = new Chart(ctx, {
@@ -290,6 +313,7 @@ maxFluppe = loadData("maxFluppe", 0);
 costFluppe = loadData("costFluppe", 0);
 labelFluppe.textContent = count;
 labelMax.textContent = maxFluppe;
+moneyWastedLabel.textContent = moneyWasteTodayCalc();
 maxInput.value = maxFluppe;
 checkReset();
 getMoving();
