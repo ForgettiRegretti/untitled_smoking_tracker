@@ -1,4 +1,4 @@
-let count, history, maxFluppe, index, shuffledPhrases;
+let count, history, maxFluppe, cost, index, shuffledPhrases;
 
 //Navigation
 const menu = document.querySelector('.menu');
@@ -12,18 +12,31 @@ const mainPage = document.getElementById("mainPage");
 const settingsPage = document.getElementById("settingsPage");
 const statsPage = document.getElementById("statsPage");
 const dangerContainer = document.getElementById("danger");
+const moneyWastedContainer = document.getElementById("moneyWastedContainer");
+const unresponsivePage = document.getElementById("unresponsive")
 
 
 //Counting and displaying value
 const buttonFluppe = document.getElementById("fluppenCounter");
 const labelFluppe = document.getElementById("countLabel");
 const maxInput = document.getElementById("maxInput");
+const costFluppeInput = document.getElementById("costFluppe");
 const labelMax = document.getElementById("maxLabel");
+const radioMoneyQuote = document.querySelectorAll('input[name="footnote"]');
+const quote = document.getElementById("quote");
+const moneyWastedLabel = document.getElementById("moneyWastedLabel");
+
 
 //misc
 const fluppenBergIMG = document.querySelector(".fluppenBerg");
 const phrase = document.getElementById("phrase");
 const resetLS = document.getElementById("resetLS");
+const resetHistory = document.getElementById("resetHistory");
+const testHistory = document.getElementById("testHistory");
+const ctx = document.getElementById("testChart");
+const historyData = loadData("history", []);
+
+
 
 
 //EventListener
@@ -38,28 +51,51 @@ document.addEventListener("visibilitychange", function() {
 buttonFluppe.addEventListener("click", function () {
     count += 1;
     labelFluppe.textContent = count;
+    moneyWastedLabel.textContent = moneyWasteTodayCalc();
     saveData("count", count);
     getMoving();
-    princessTreatment();  
+    princessTreatment(); 
 });
-
-function updateHistory() {
-    const historyData = loadData("history", []);
-    historyData.push({ "time": loadData("lastDate", new Date().toDateString()), "count": count });
-    saveData("history", historyData);
-}
 
 // reset locaStorage
 resetLS.addEventListener("click", function () {
-    localStorage.removeItem("lsCount");
+    localStorage.removeItem("count");
     localStorage.removeItem("maxFluppe");
+    localStorage.removeItem("history");
+    localStorage.removeItem("lastDate");
+    localStorage.removeItem("index");
     count = 0;
     labelFluppe.textContent = count;
     maxFluppe = 0;
     labelMax.textContent = maxFluppe;
-    //    localStorage.setItem("lastDate", "Fri Nov 06 2026")
     }
 );
+
+resetHistory.addEventListener("click", function() {
+    localStorage.removeItem("history")
+});
+
+testHistory.addEventListener("click", function() {
+    if (loadData("history").length === 0) {
+        localStorage.setItem("history", JSON.stringify([{"time":"Mon Nov 09 2026","count":10}, {"time":"Sun Nov 08 2026","count":14}, {"time":"Sat Nov 07 2026","count":8}])); 
+    }
+});
+
+for (const radioButton of radioMoneyQuote) {
+    radioButton.addEventListener("change", function() {
+        if (radioButton.checked && radioButton.value === "radioQuote") {
+            quote.classList.remove("hidden");
+            moneyWastedContainer.classList.add("hidden");
+        }
+        else if (radioButton.checked && radioButton.value === "radioMoney") {
+            quote.classList.add("hidden");
+            moneyWastedContainer.classList.remove("hidden");
+            moneyWasteTodayCalc();
+        }
+    });
+};
+
+
 
 
 // ClassList thingy to display different pages
@@ -67,7 +103,12 @@ resetLS.addEventListener("click", function () {
 // TODO add navStats
 function toggleNav () {
     menu.classList.toggle("active");
-}
+    unresponsivePage.classList.toggle("hidden");
+};
+
+unresponsivePage.addEventListener("click", function() {
+    toggleNav();
+});
 
 navHome.addEventListener("click", function() {
     mainPage.classList.remove("hidden");
@@ -88,7 +129,14 @@ navStats.addEventListener("click", function() {
     settingsPage.classList.add("hidden");
     statsPage.classList.remove("hidden");
     toggleNav();
-})
+    if (typeof Chart !== "undefined") {
+        const [labels, values] = extractHistoryChart();
+        updateChart(labels, values);
+    }
+});
+
+settingsIcon.addEventListener("click", toggleNav);
+
 
 // update max fluppen
 maxInput.addEventListener("change", function() {
@@ -97,7 +145,11 @@ maxInput.addEventListener("change", function() {
     saveData("maxFluppe", maxFluppe);
 });
 
-settingsIcon.addEventListener("click", toggleNav);
+costFluppeInput.addEventListener("change", function() {
+    costFluppe = Number(costFluppeInput.value);
+    saveData("costFluppe", costFluppe);
+    moneyWastedLabel.textContent = moneyWasteTodayCalc();
+})
 
 
 
@@ -124,13 +176,51 @@ function checkReset() {
         dangerContainer.classList.add("hidden");
         updateHistory();
         count = 0;
+        index = 0;
         labelFluppe.textContent = count;
         shuffledPhrases = shuffle(meanPhrases);
         saveData("lastDate", today);
         saveData("count", count);
-        saveData("shuffledPhrases", shuffledPhrases);   
+        saveData("index", index)
+        saveData("shuffledPhrases", shuffledPhrases);
+        if (today.slice(0,3) === "Mon") {
+            maxFluppe -= 1;              // TODO add user input method and to enable
+            labelMax.textContent = maxFluppe;
+            saveData("maxFluppe", maxFluppe);
+        }
     }
 };
+
+
+// history
+function updateHistory() {
+    const historyData = loadData("history", []);
+    historyData.push({ "time": loadData("lastDate", new Date().toDateString()), "count": count });
+    saveData("history", historyData);
+};
+
+
+// for future feature, where weekly avarage cigarette count is used as maxFluppe NOT TESTED
+function getHistoryWeekCount () {
+    const todayDay = today.slice(8, 10)
+    let weekCount;
+    let i = 7;
+    if (historyData.length() >= 7) {
+        let historySlice = historyData.slice(-7)
+        for (let obj of historySlice) {
+            let hDay = obj[0];
+            if (hDay.slice(8,10) == todayDay - 1) {
+                let hCount = Number(obj[1]);
+                weekCount += hCount;
+            }
+            else i -= 1;
+            todayDay -= 1;
+        }
+        const averageCount = weekCount / i;
+        return averageCount
+    }
+}
+
 
 
 // calculate transition for animation
@@ -178,8 +268,6 @@ function princessTreatment() {
     }
 };
 
-
-// TODO add function that calculates spend money
 function nextPhrase() {
     index = loadData("index", 0);
     shuffledPhrases = loadData("shuffledPhrases", []);
@@ -200,12 +288,69 @@ function shuffle(array) {
     return copy;
 }
 
+function extractHistoryChart() {
+    const labelDate = [];
+    const countData = [];
+    for (let obj of historyData) {
+        labelDate.push(obj["time"]);
+        countData.push(obj["count"]);
+    }
+    return [labelDate, countData];
+}
 
-checkReset();
+function moneyWasteTodayCalc() {
+    costFluppe = loadData("costFluppe", 0);
+    cost = costFluppe * count;
+    return cost
+};
+
+
+
+//------------------- Chart ----------------
+if (typeof Chart !== "undefined") {
+
+    const testChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+        labels: [],
+        datasets: [
+                {
+                label: "Count per day",
+                data: [],
+                borderColor: "#999",
+                borderWidth: 1,
+                borderRadius: 5,
+                borderSkipped: false,
+                maxBarThickness: 28,
+                backgroundColor: "#f5f5f5",
+                },
+            ],
+    },
+
+    options: {
+        scales: {
+        y: { beginAtZero: true },
+        },
+    },
+    },);
+
+    function updateChart(newLabels, newValues) {
+    testChart.data.labels = newLabels;
+    testChart.data.datasets[0].data = newValues;
+    testChart.update();
+    };
+};
+
+
+
+
 count = loadData("count", 0)
 maxFluppe = loadData("maxFluppe", 0);
+costFluppe = loadData("costFluppe", 0);
 labelFluppe.textContent = count;
 labelMax.textContent = maxFluppe;
+moneyWastedLabel.textContent = moneyWasteTodayCalc();
 maxInput.value = maxFluppe;
+checkReset();
 getMoving();
-princessTreatment()
+princessTreatment();

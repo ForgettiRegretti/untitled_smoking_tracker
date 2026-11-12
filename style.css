@@ -1,5 +1,6 @@
 html, body {
     margin: 0;
+    font-size: max(16px, 2vh);
 }
 
 body {
@@ -37,51 +38,51 @@ body {
     max-width: 450px;
     border-radius: 0 15px 15px 0;
     position: fixed;
+    anchor-name: --menuAnchor;
     z-index: 1;
     top: 0;
     left: -450px;
     transition: .3s ease; 
 }
 
-.mcTop .menu.active {
-    left: 0;
-}
+    .mcTop .menu.active {
+        left: 0;
+    }
 
-.menu ul {
-    list-style: none;
-    margin: 60px;
-    padding: 0;
-    width: 100%;
-    max-width: 450px;
-}
+    .menu ul {
+        list-style: none;
+        margin: 60px;
+        padding: 0;
+        width: 100%;
+        max-width: 450px;
+    }
 
-.menu li {
-    margin: 20px 0;
+    .menu li {
+        margin: 20px 0;
+    }
 
-}
+    .menu button {
+        color: whitesmoke;
+        background : none;
+        border: none;
+        font-size: 2rem;
+        width: 100%;
+        max-width: 450px;
+    }
 
-.menu button {
-    color: whitesmoke;
-    background : none;
-    border: none;
-    font-size: 2rem;
-    width: 100%;
-    max-width: 450px;
-}
+    .menu li:hover {
+        background-color: #072b40;
+    }
 
-.menu li:hover {
-    background-color: #072b40;
-}
-
-.mcTop img {
-    padding: 20px 10px;
-    width: min(15dvw, 80px);
-    height: auto;
-    position: absolute;
-    z-index: 2;
-    top: 0;
-    left: 0;
-}
+    .mcTop img {
+        padding: 20px 10px;
+        width: min(15dvw, 80px);
+        height: auto;
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        left: 0;
+    }
 
 /*---------------------------- Main Page -----------------------------------------*/
 .mcTop h1 {
@@ -109,51 +110,51 @@ body {
     max-width: 100%;
 }
 
-.lBackground {
-    display: block;
-    min-height: 0;
-    max-width: 100%;
-    object-fit: contain;
-}
+    .lBackground {
+        display: block;
+        min-height: 0;
+        max-width: 100%;
+        object-fit: contain;
+    }
 
-.fluppenClip {
-    position: absolute;
-    inset: 0 0 4% 0;
-    overflow: hidden;
-}
+    .fluppenClip {
+        position: absolute;
+        inset: 0 0 4% 0;
+        overflow: hidden;
+    }
 
-.fluppenBerg {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transform: translateY(100%);
-    transition: transform 2s ease-out;
-}
+    .fluppenBerg {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        transform: translateY(100%);
+        transition: transform 2s ease-out;
+    }
 
-.lOverlay {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
+    .lOverlay {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
 
-.danger {
-    position: absolute;
-    inset: 28% 2% 48%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    background-color: firebrick;
-    text-align: center;
-    font-size: 2rem;
-    border-radius: 10px; 
-}
+    .danger {
+        position: absolute;
+        inset: 28% 2% 48%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        background-color: firebrick;
+        text-align: center;
+        font-size: 2rem;
+        border-radius: 10px; 
+    }
 
-.danger p {
-    margin: 0;
-}
+    .danger p {
+        margin: 0;
+    }
 
 .mainPage .count_label {
     flex-grow: 0 0 auto;
@@ -171,20 +172,27 @@ body {
     cursor: pointer;
 }
 
-.fluppen_counter img {
-    display: block;
-    width: 100%;
-    height: auto;
-}
+    .fluppen_counter img {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
 
-.mainPage .quote {
+.quote {
     flex-grow:  0 0 auto;
     padding: 10px;
     color: whitesmoke;
     text-align: center;
 }
 
-/*--------------------------------- Settings -----------------------------------*/
+#moneyWastedContainer {
+    flex-grow:  0 0 auto;
+    padding: 10px;
+    color: whitesmoke;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
 .settingsPage {
     display: flex;
     flex-direction: column;
@@ -197,9 +205,34 @@ body {
     color: whitesmoke;
 }
 
+.stats {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  height: 300px;
+}
+
+.testChart {
+    width:100%;
+    max-width:700px
+}
+
+.unresponsive {
+    display: flex;
+    flex: 1;
+    position: fixed;
+    position-anchor: --menuAnchor;
+    left: anchor(right);
+    top: anchor(top);
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
 .hidden {
     display: none;
 }
+
 
 
 

@@ -17,7 +17,7 @@
 
     <link rel="stylesheet" href="style.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.js"></script>
     <script src="script.js" defer></script>
 
 </head>
@@ -25,7 +25,6 @@
 <body>
 
     <div class="main_container">
-
         <div class="mcTop">
             <div class="menu">
                 <ul>
@@ -34,6 +33,7 @@
                     <li><button id="navStats">Statistic</button></li>
                 </ul>
             </div>
+            <div class="unresponsive hidden" id="unresponsive"></div>
             <img id="settingsIcon" src="./Images/IMG_settingsIcon.png" alt="Settings Icon">
             <h1>Untitled Smoking Tracker</h1>
         </div>
@@ -49,20 +49,33 @@
             </div>
             <div class="danger hidden" id="danger"><p id="phrase">what a dissapointment you are</p></div>
 
-            <p class="count_label"><span id="countLabel">0</span> / <span id="maxLabel"></span></p>
+            <p class="count_label"><span id="countLabel">0</span> / <span id="maxLabel">0</span></p>
             <button class="fluppen_counter" id="fluppenCounter">
                 <img src="./Images/IMG_fluppenButton.png" alt="fluppe button">
             </button>
-            <p class="quote">"Solang man lebt, soll man rauchen" - Helmut Körschgen (1923–2002)</p>
+            <p class="quote hidden" id="quote">"If i can't smoke in heaven, I shall not go" - Mark Twain</p>
+            <p id="moneyWastedContainer"><span id="moneyWastedLabel">0.00</span> Euro</p>
         </div>
-
-        
 
         <div class="settingsPage hidden" id="settingsPage">
             <h2>Settings</h2>
             <label for="maxInput">Max Fluppen pro tag:</label>
-            <input type="number" id="maxInput" name="maxInput" min="0" step="1" inputmode="numeric">
+            <input type="number" id="maxInput" name="maxInput" value="10" min="0" step="1" inputmode="numeric">
+            <label for="costFluppe"> kosten fuer einzelne fluppe</label>
+            <input type="number" id="costFluppe" name="costFluppe" value="0.00" min="0" inputmode="numeric">
             <button id="resetLS">reset localStorage</button>
+            <button id="resetHistory">reset history</button>
+            <button id="testHistory">add test history to localStorage</button>
+            <div>
+                <label for="radioQuote">Quote</label>
+                <input type="radio" id="radioQuote" name="footnote" value="radioQuote">
+                <label for="radioMoney">Money</label>
+                <input type="radio" id="radioMoney" name="footnote" value="radioMoney" checked>
+            </div>
+        </div>
+
+        <div class="stats hidden" id="statsPage">
+            <canvas id="testChart"></canvas> 
         </div>
 
     </div>
