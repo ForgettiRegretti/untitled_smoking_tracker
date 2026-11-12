@@ -13,6 +13,7 @@ const settingsPage = document.getElementById("settingsPage");
 const statsPage = document.getElementById("statsPage");
 const dangerContainer = document.getElementById("danger");
 const moneyWastedContainer = document.getElementById("moneyWastedContainer");
+const unresponsivePage = document.getElementById("unresponsive")
 
 
 //Counting and displaying value
@@ -102,7 +103,12 @@ for (const radioButton of radioMoneyQuote) {
 // TODO add navStats
 function toggleNav () {
     menu.classList.toggle("active");
-}
+    unresponsivePage.classList.toggle("hidden");
+};
+
+unresponsivePage.addEventListener("click", function() {
+    toggleNav();
+});
 
 navHome.addEventListener("click", function() {
     mainPage.classList.remove("hidden");
@@ -194,7 +200,7 @@ function updateHistory() {
 };
 
 
-// for future feature, where weekly avarage cigarette count is used as maxFluppe
+// for future feature, where weekly avarage cigarette count is used as maxFluppe NOT TESTED
 function getHistoryWeekCount () {
     const todayDay = today.slice(8, 10)
     let weekCount;
@@ -214,6 +220,8 @@ function getHistoryWeekCount () {
         return averageCount
     }
 }
+
+
 
 // calculate transition for animation
 function getMoving () {

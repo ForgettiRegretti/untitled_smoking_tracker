@@ -38,6 +38,7 @@ body {
     max-width: 450px;
     border-radius: 0 15px 15px 0;
     position: fixed;
+    anchor-name: --menuAnchor;
     z-index: 1;
     top: 0;
     left: -450px;
@@ -216,9 +217,22 @@ body {
     max-width:700px
 }
 
+.unresponsive {
+    display: flex;
+    flex: 1;
+    position: fixed;
+    position-anchor: --menuAnchor;
+    left: anchor(right);
+    top: anchor(top);
+    height: 100%;
+    width: 100%;
+    z-index: 1;
+}
+
 .hidden {
     display: none;
 }
+
 
 
 
