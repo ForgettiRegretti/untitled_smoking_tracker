@@ -33,6 +33,7 @@ const resetLS = document.getElementById("resetLS");
 const resetHistory = document.getElementById("resetHistory");
 const testHistory = document.getElementById("testHistory");
 const ctx = document.getElementById("testChart");
+const historyData = loadData("history", []);
 
 
 
@@ -54,12 +55,6 @@ buttonFluppe.addEventListener("click", function () {
     getMoving();
     princessTreatment(); 
 });
-
-function updateHistory() {
-    const historyData = loadData("history", []);
-    historyData.push({ "time": loadData("lastDate", new Date().toDateString()), "count": count });
-    saveData("history", historyData);
-}
 
 // reset locaStorage
 resetLS.addEventListener("click", function () {
@@ -129,7 +124,7 @@ navStats.addEventListener("click", function() {
     statsPage.classList.remove("hidden");
     toggleNav();
     if (typeof Chart !== "undefined") {
-        const [labels, values] = extractHistory();
+        const [labels, values] = extractHistoryChart();
         updateChart(labels, values);
     }
 });
@@ -175,14 +170,50 @@ function checkReset() {
         dangerContainer.classList.add("hidden");
         updateHistory();
         count = 0;
+        index = 0;
         labelFluppe.textContent = count;
         shuffledPhrases = shuffle(meanPhrases);
         saveData("lastDate", today);
         saveData("count", count);
-        saveData("shuffledPhrases", shuffledPhrases);   
+        saveData("index", index)
+        saveData("shuffledPhrases", shuffledPhrases);
+        if (today.slice(0,3) === "Mon") {
+            maxFluppe -= 1;              // TODO add user input method and to enable
+            labelMax.textContent = maxFluppe;
+            saveData("maxFluppe", maxFluppe);
+        }
     }
 };
 
+
+// history
+function updateHistory() {
+    const historyData = loadData("history", []);
+    historyData.push({ "time": loadData("lastDate", new Date().toDateString()), "count": count });
+    saveData("history", historyData);
+};
+
+
+// for future feature, where weekly avarage cigarette count is used as maxFluppe
+function getHistoryWeekCount () {
+    const todayDay = today.slice(8, 10)
+    let weekCount;
+    let i = 7;
+    if (historyData.length() >= 7) {
+        let historySlice = historyData.slice(-7)
+        for (let obj of historySlice) {
+            let hDay = obj[0];
+            if (hDay.slice(8,10) == todayDay - 1) {
+                let hCount = Number(obj[1]);
+                weekCount += hCount;
+            }
+            else i -= 1;
+            todayDay -= 1;
+        }
+        const averageCount = weekCount / i;
+        return averageCount
+    }
+}
 
 // calculate transition for animation
 function getMoving () {
@@ -249,8 +280,7 @@ function shuffle(array) {
     return copy;
 }
 
-function extractHistory() {
-    const historyData = loadData("history", []);
+function extractHistoryChart() {
     const labelDate = [];
     const countData = [];
     for (let obj of historyData) {
@@ -302,8 +332,6 @@ if (typeof Chart !== "undefined") {
     testChart.update();
     };
 };
-
-
 
 
 
