@@ -203,6 +203,7 @@ body {
     padding: 15px;
     box-sizing: border-box;
     color: whitesmoke;
+    transition: .3s ease; 
 }
 
 .stats {

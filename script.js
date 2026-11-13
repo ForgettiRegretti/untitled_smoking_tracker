@@ -51,7 +51,7 @@ document.addEventListener("visibilitychange", function() {
 buttonFluppe.addEventListener("click", function () {
     count += 1;
     labelFluppe.textContent = count;
-    moneyWastedLabel.textContent = moneyWasteTodayCalc();
+    moneyWastedLabel.textContent = moneyWastedCalc();
     saveData("count", count);
     getMoving();
     princessTreatment(); 
@@ -90,7 +90,7 @@ for (const radioButton of radioMoneyQuote) {
         else if (radioButton.checked && radioButton.value === "radioMoney") {
             quote.classList.add("hidden");
             moneyWastedContainer.classList.remove("hidden");
-            moneyWasteTodayCalc();
+            moneyWastedLabel.textContent = moneyWastedCalc();
         }
     });
 };
@@ -148,7 +148,7 @@ maxInput.addEventListener("change", function() {
 costFluppeInput.addEventListener("change", function() {
     costFluppe = Number(costFluppeInput.value);
     saveData("costFluppe", costFluppe);
-    moneyWastedLabel.textContent = moneyWasteTodayCalc();
+    moneyWastedLabel.textContent = moneyWastedCalc();
 })
 
 
@@ -298,9 +298,15 @@ function extractHistoryChart() {
     return [labelDate, countData];
 }
 
-function moneyWasteTodayCalc() {
+function moneyWastedCalc() {
+    let temp = 0;
+    let hCount;
     costFluppe = loadData("costFluppe", 0);
-    cost = costFluppe * count;
+    for (let obj of historyData){
+        hCount = Number(obj["count"]);
+        temp += hCount;   
+    }
+    cost = (temp + count) * costFluppe;
     return cost
 };
 
@@ -349,7 +355,7 @@ maxFluppe = loadData("maxFluppe", 0);
 costFluppe = loadData("costFluppe", 0);
 labelFluppe.textContent = count;
 labelMax.textContent = maxFluppe;
-moneyWastedLabel.textContent = moneyWasteTodayCalc();
+moneyWastedLabel.textContent = moneyWastedCalc();
 maxInput.value = maxFluppe;
 checkReset();
 getMoving();
