@@ -39,7 +39,7 @@
         </div>
 
         <div class="mainPage" id="mainPage">
-            <div class="imgWrapper">
+            <div class="imgWrapperOne hidden" id="animationOne">
                 <img class="lBackground" src="./Images/IMG_lungBackground.png" alt="background">
                 <div class="fluppenClip">
                     <img class="fluppenBerg" src="./Images/IMG_fluppenBerg.png" alt="fluppen berg">
@@ -47,8 +47,13 @@
                 <img class="lOverlay" src="./Images/IMG_lungOverlay.png" alt="overlay">
 
             </div>
-            <div class="danger hidden" id="danger"><p id="phrase">what a dissapointment you are</p></div>
+            <div class="imgWrapperTwo" id="animationTwo">
+                <img class="singleFluppe" src="./Images/IMG_singleFluppeBase.png" alt="base">
+                <img class="singleFluppeAsh" src="./Images/IMG_singleFluppeAsh.png">
+                <img class="singleFluppeBurning" src="./Images/IMG_singleFluppeBurning.png">
+            </div>
 
+            <div class="danger hidden" id="danger"><p id="phrase">what a dissapointment you are</p></div>
             <p class="count_label"><span id="countLabel">0</span> / <span id="maxLabel">0</span></p>
             <button class="fluppen_counter" id="fluppenCounter">
                 <img src="./Images/IMG_fluppenButton.png" alt="fluppe button">
@@ -66,6 +71,8 @@
             <button id="resetLS">reset localStorage</button>
             <button id="resetHistory">reset history</button>
             <button id="testHistory">add test history to localStorage</button>
+            <label for="animationButton">Change animation</label>
+            <button id="animationButton"><span id="animationButtonLabel"></span></button>
             <div>
                 <label for="radioQuote">Quote</label>
                 <input type="radio" id="radioQuote" name="footnote" value="radioQuote">

@@ -1,4 +1,4 @@
-let count, history, maxFluppe, cost, index, shuffledPhrases;
+let count, history, maxFluppe, cost, index, shuffledPhrases, percentTwo;
 
 //Navigation
 const menu = document.querySelector('.menu');
@@ -13,8 +13,9 @@ const settingsPage = document.getElementById("settingsPage");
 const statsPage = document.getElementById("statsPage");
 const dangerContainer = document.getElementById("danger");
 const moneyWastedContainer = document.getElementById("moneyWastedContainer");
-const unresponsivePage = document.getElementById("unresponsive")
-
+const unresponsivePage = document.getElementById("unresponsive");
+const animationOne = document.getElementById("animationOne");
+const animationTwo = document.getElementById("animationTwo");
 
 //Counting and displaying value
 const buttonFluppe = document.getElementById("fluppenCounter");
@@ -25,10 +26,14 @@ const labelMax = document.getElementById("maxLabel");
 const radioMoneyQuote = document.querySelectorAll('input[name="footnote"]');
 const quote = document.getElementById("quote");
 const moneyWastedLabel = document.getElementById("moneyWastedLabel");
+const changeAnimationButton = document.getElementById("animationButton");
+const animationButtonLabel = document.getElementById("animationButtonLabel");
 
 
 //misc
 const fluppenBergIMG = document.querySelector(".fluppenBerg");
+const fluppeAshIMG = document.querySelector(".singleFluppeAsh");
+const fluppeBurningIMG = document.querySelector(".singleFluppeBurning");
 const phrase = document.getElementById("phrase");
 const resetLS = document.getElementById("resetLS");
 const resetHistory = document.getElementById("resetHistory");
@@ -40,10 +45,14 @@ const historyData = loadData("history", []);
 
 
 //EventListener
+
+
 document.addEventListener("visibilitychange", function() {
     if(document.visibilityState === "visible") {
         checkReset();
         getMoving();
+        getMovingTwoStartPos();
+        getMovingTwo();
     }
 });
 
@@ -54,6 +63,7 @@ buttonFluppe.addEventListener("click", function () {
     moneyWastedLabel.textContent = moneyWastedCalc();
     saveData("count", count);
     getMoving();
+    getMovingTwo();
     princessTreatment(); 
 });
 
@@ -95,7 +105,19 @@ for (const radioButton of radioMoneyQuote) {
     });
 };
 
+changeAnimationButton.addEventListener("click", function() {
+    animationOne.classList.toggle("hidden");
+    animationTwo.classList.toggle("hidden");
+    if(animationOne.classList.contains("hidden")) {
+        animationButtonLabel.textContent = "Cigarette";
+    }
+    else animationButtonLabel.textContent = "lung";
+});
 
+fluppeBurningIMG.addEventListener('transitionend', function () {
+    fluppeBurningIMG.style.opacity = 0;
+    fluppeAshIMG.style.opacity = 1;
+});
 
 
 // ClassList thingy to display different pages
@@ -227,9 +249,28 @@ function getHistoryWeekCount () {
 function getMoving () {
     let percent = 100 - (count / maxFluppe) * 100;
     if(percent >= 0 && percent <= 100){
-    fluppenBergIMG.style.transform = `translateY(${percent}%)`;
+        fluppenBergIMG.style.transform = `translateY(${percent}%)`;
     }
 };
+
+function getMovingTwo () {
+    percentTwo = -(82 - (count / maxFluppe) * 82);
+
+    if(percentTwo <= 0 && percentTwo >= -82){
+        fluppeBurningIMG.style.opacity = 1;
+        fluppeAshIMG.style.opacity = 0;
+        fluppeAshIMG.style.transform = `translateY(${percentTwo}%)`;
+        fluppeBurningIMG.style.transform = `translateY(${percentTwo}%)`;
+    }
+}
+
+function getMovingTwoStartPos () {
+    fluppeAshIMG.style.transition = 'none';
+    fluppeAshIMG.style.transform = `translateY(${percentTwo}%)`;
+    fluppeAshIMG.offsetHeight;
+    fluppeAshIMG.style.transition = '';
+}
+
 
 // scolding phrases, neatly displayed on failure
 const meanPhrases = [
@@ -357,6 +398,9 @@ labelFluppe.textContent = count;
 labelMax.textContent = maxFluppe;
 moneyWastedLabel.textContent = moneyWastedCalc();
 maxInput.value = maxFluppe;
+animationButtonLabel.textContent = "cigarette"
 checkReset();
 getMoving();
+getMovingTwoStartPos();
+getMovingTwo();
 princessTreatment();
