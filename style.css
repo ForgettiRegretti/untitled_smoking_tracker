@@ -148,13 +148,6 @@ body {
     overflow: hidden;
 }
 
-    .singleFluppe {
-        display: block;
-        min-height: 0;
-        max-width: 100%;
-        object-fit: contain;
-    }
-
     .singleFluppeBurning {
         opacity: 0;
         position: absolute;
@@ -172,6 +165,13 @@ body {
         object-fit: contain;
         transform: translateY(-82%);
         transition: transform 3s ease-out;
+    }
+
+    .singleFluppe {
+        display: block;
+        min-height: 0;
+        max-width: 100%;
+        object-fit: contain;
     }
 
 .danger {

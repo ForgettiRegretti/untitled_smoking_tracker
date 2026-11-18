@@ -51,8 +51,8 @@ document.addEventListener("visibilitychange", function() {
     if(document.visibilityState === "visible") {
         checkReset();
         getMoving();
-        getMovingTwoStartPos();
         getMovingTwo();
+        fluppeBurningIMG.style.opacity = 0;
     }
 });
 
@@ -264,13 +264,6 @@ function getMovingTwo () {
     }
 }
 
-function getMovingTwoStartPos () {
-    fluppeAshIMG.style.transition = 'none';
-    fluppeAshIMG.style.transform = `translateY(${percentTwo}%)`;
-    fluppeAshIMG.offsetHeight;
-    fluppeAshIMG.style.transition = '';
-}
-
 
 // scolding phrases, neatly displayed on failure
 const meanPhrases = [
@@ -348,6 +341,7 @@ function moneyWastedCalc() {
         temp += hCount;   
     }
     cost = (temp + count) * costFluppe;
+    cost = cost.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
     return cost
 };
 
@@ -398,9 +392,10 @@ labelFluppe.textContent = count;
 labelMax.textContent = maxFluppe;
 moneyWastedLabel.textContent = moneyWastedCalc();
 maxInput.value = maxFluppe;
+costFluppeInput.value = costFluppe;
 animationButtonLabel.textContent = "cigarette"
 checkReset();
 getMoving();
-getMovingTwoStartPos();
 getMovingTwo();
+fluppeBurningIMG.style.opacity = 0;
 princessTreatment();
