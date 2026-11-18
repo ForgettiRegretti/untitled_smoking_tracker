@@ -1,4 +1,4 @@
-let count, history, maxFluppe, cost, index, shuffledPhrases, percentTwo;
+let count, history, maxFluppe, cost, index, shuffledPhrases;
 
 //Navigation
 const menu = document.querySelector('.menu');
@@ -51,8 +51,8 @@ document.addEventListener("visibilitychange", function() {
     if(document.visibilityState === "visible") {
         checkReset();
         getMoving();
-        getMovingTwo();
         fluppeBurningIMG.style.opacity = 0;
+        getMovingTwo();
     }
 });
 
@@ -246,21 +246,26 @@ function getHistoryWeekCount () {
 
 
 // calculate transition for animation
+
+function percentCalc (startpos = 100) {
+    let aniCount = Math.min(count, maxFluppe);
+    let percent = startpos - (aniCount / maxFluppe) * startpos;
+    return percent
+}
+
 function getMoving () {
-    let percent = 100 - (count / maxFluppe) * 100;
-    if(percent >= 0 && percent <= 100){
-        fluppenBergIMG.style.transform = `translateY(${percent}%)`;
-    }
+    let percent = percentCalc()
+    fluppenBergIMG.style.transform = `translateY(${percent}%)`;
 };
 
 function getMovingTwo () {
-    percentTwo = -(82 - (count / maxFluppe) * 82);
+    let percent = -(percentCalc(82));
 
-    if(percentTwo <= 0 && percentTwo >= -82){
+    if (percent != -82){
         fluppeBurningIMG.style.opacity = 1;
         fluppeAshIMG.style.opacity = 0;
-        fluppeAshIMG.style.transform = `translateY(${percentTwo}%)`;
-        fluppeBurningIMG.style.transform = `translateY(${percentTwo}%)`;
+        fluppeAshIMG.style.transform = `translateY(${percent}%)`;
+        fluppeBurningIMG.style.transform = `translateY(${percent}%)`;
     }
 }
 
@@ -394,8 +399,8 @@ moneyWastedLabel.textContent = moneyWastedCalc();
 maxInput.value = maxFluppe;
 costFluppeInput.value = costFluppe;
 animationButtonLabel.textContent = "cigarette"
+fluppeBurningIMG.style.opacity = 0;
 checkReset();
 getMoving();
 getMovingTwo();
-fluppeBurningIMG.style.opacity = 0;
 princessTreatment();
