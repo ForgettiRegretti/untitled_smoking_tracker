@@ -23,11 +23,12 @@ const labelFluppe = document.getElementById("countLabel");
 const maxInput = document.getElementById("maxInput");
 const costFluppeInput = document.getElementById("costFluppe");
 const labelMax = document.getElementById("maxLabel");
-const radioMoneyQuote = document.querySelectorAll('input[name="footnote"]');
+const footnoteButton = document.getElementById("footnoteButton");
+const labelFootnoteButton = document.getElementById("labelFootnoteButton")
 const quote = document.getElementById("quote");
 const moneyWastedLabel = document.getElementById("moneyWastedLabel");
 const changeAnimationButton = document.getElementById("animationButton");
-const animationButtonLabel = document.getElementById("animationButtonLabel");
+const labelAnimationButton = document.getElementById("labelAnimationButton");
 
 
 //misc
@@ -91,27 +92,23 @@ testHistory.addEventListener("click", function() {
     }
 });
 
-for (const radioButton of radioMoneyQuote) {
-    radioButton.addEventListener("change", function() {
-        if (radioButton.checked && radioButton.value === "radioQuote") {
-            quote.classList.remove("hidden");
-            moneyWastedContainer.classList.add("hidden");
-        }
-        else if (radioButton.checked && radioButton.value === "radioMoney") {
-            quote.classList.add("hidden");
-            moneyWastedContainer.classList.remove("hidden");
-            moneyWastedLabel.textContent = moneyWastedCalc();
-        }
-    });
-};
+footnoteButton.addEventListener("click", function() {
+    quote.classList.toggle("hidden");
+    moneyWastedContainer.classList.toggle("hidden");
+    if (quote.classList.contains("hidden")) {
+        labelFootnoteButton.textContent = "wasted money";
+        moneyWastedLabel.textContent = moneyWastedCalc();
+    }
+    else labelFootnoteButton.textContent = "quote";
+});
 
 changeAnimationButton.addEventListener("click", function() {
     animationOne.classList.toggle("hidden");
     animationTwo.classList.toggle("hidden");
     if(animationOne.classList.contains("hidden")) {
-        animationButtonLabel.textContent = "Cigarette";
+        labelAnimationButton.textContent = "Cigarette";
     }
-    else animationButtonLabel.textContent = "lung";
+    else labelAnimationButton.textContent = "lung";
 });
 
 fluppeBurningIMG.addEventListener('transitionend', function () {
@@ -398,7 +395,8 @@ labelMax.textContent = maxFluppe;
 moneyWastedLabel.textContent = moneyWastedCalc();
 maxInput.value = maxFluppe;
 costFluppeInput.value = costFluppe;
-animationButtonLabel.textContent = "cigarette"
+labelAnimationButton.textContent = "cigarette"
+labelFootnoteButton.textContent = "wasted money"
 fluppeBurningIMG.style.opacity = 0;
 checkReset();
 getMoving();
