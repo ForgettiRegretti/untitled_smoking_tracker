@@ -33,7 +33,7 @@
                     <li><button id="navStats">Statistic</button></li>
                 </ul>
             </div>
-            <div class="unresponsive hidden" id="unresponsive"></div>
+            <div class="menuOverlay hidden" id="menuOverlay"></div>
             <img id="settingsIcon" src="./Images/IMG_settingsIcon.png" alt="Settings Icon">
             <h1>Untitled Smoking Tracker</h1>
         </div>
@@ -42,7 +42,7 @@
             <div class="imgWrapperOne hidden" id="animationOne">
                 <img class="lBackground" src="./Images/IMG_lungBackground.png" alt="background">
                 <div class="fluppenClip">
-                    <img class="fluppenBerg" src="./Images/IMG_fluppenBerg.png" alt="fluppen berg">
+                    <img class="cigarettePileImage" src="./Images/IMG_fluppenBerg.png" alt="fluppen berg">
                 </div>
                 <img class="lOverlay" src="./Images/IMG_lungOverlay.png" alt="overlay">
 
@@ -64,21 +64,23 @@
 
         <div class="settingsPage hidden" id="settingsPage">
             <h2>Settings</h2>
-            <label for="maxInput">Max Fluppen pro tag:</label>
+            <label for="maxInput">max cigarettes/day:</label>
             <input type="number" id="maxInput" name="maxInput" value="10" min="0" step="1" inputmode="numeric">
-            <label for="costFluppe"> kosten fuer einzelne fluppe</label>
+            <label for="costFluppe">cost for single cigarette</label>
             <input type="number" id="costFluppe" name="costFluppe" value="0.00" min="0" inputmode="numeric">
+            <label for="fluppenReduction">weekly cigarette reduction</label>
+            <input type="number" id="fluppenReduction" value="0" min="0" inputmode="numeric">
+            <label for="animationButton">Change animation</label>
+            <button id="animationButton"><span id="labelAnimationButton">cigarette</span></button>
+            <label for="footnoteButton">Change Footnote</label>
+            <button id="footnoteButton"><span id="labelFootnoteButton">wasted money</span></button>
             <button id="resetLS">reset localStorage</button>
             <button id="resetHistory">reset history</button>
             <button id="testHistory">add test history to localStorage</button>
-            <label for="animationButton">Change animation</label>
-            <button id="animationButton"><span id="labelAnimationButton"></span></button>
-            <label for="footnoteButton">Change Footnote</label>
-            <button id="footnoteButton"><span id="labelFootnoteButton"></span></button>
         </div>
 
         <div class="stats hidden" id="statsPage">
-            <canvas id="testChart"></canvas> 
+            <canvas id="historyChart"></canvas> 
         </div>
 
     </div>

@@ -123,7 +123,7 @@ body {
         overflow: hidden;
     }
 
-        .fluppenBerg {
+        .cigarettePileImage {
             width: 100%;
             height: 100%;
             object-fit: contain;
@@ -244,7 +244,7 @@ body {
     max-width:700px
 }
 
-.unresponsive {
+.menuOverlay {
     display: flex;
     flex: 1;
     position: fixed;

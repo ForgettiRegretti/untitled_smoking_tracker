@@ -1,4 +1,7 @@
-let count, history, maxFluppe, cost, index, shuffledPhrases;
+//State
+
+let count, dailyLimit, moneyWasted, cigarettePrice, phraseIndex, shuffledPhrases, 
+    selectedAnimation, oldPercent, percent, weeklyReduction;
 
 //Navigation
 const menu = document.querySelector('.menu');
@@ -13,168 +16,61 @@ const settingsPage = document.getElementById("settingsPage");
 const statsPage = document.getElementById("statsPage");
 const dangerContainer = document.getElementById("danger");
 const moneyWastedContainer = document.getElementById("moneyWastedContainer");
-const unresponsivePage = document.getElementById("unresponsive");
-const animationOne = document.getElementById("animationOne");
-const animationTwo = document.getElementById("animationTwo");
+const menuOverlay = document.getElementById("menuOverlay");
+const lungAnimation = document.getElementById("animationOne");
+const cigaretteAnimation = document.getElementById("animationTwo");
 
 //Counting and displaying value
-const buttonFluppe = document.getElementById("fluppenCounter");
-const labelFluppe = document.getElementById("countLabel");
-const maxInput = document.getElementById("maxInput");
-const costFluppeInput = document.getElementById("costFluppe");
-const labelMax = document.getElementById("maxLabel");
-const footnoteButton = document.getElementById("footnoteButton");
-const labelFootnoteButton = document.getElementById("labelFootnoteButton")
+const ButtonCountCigarette = document.getElementById("fluppenCounter");
+const labelCountCigarette = document.getElementById("countLabel");
+const inputDailyLimit = document.getElementById("maxInput");
+const labelDailyLimit = document.getElementById("maxLabel");
+const inputCigarettePrice = document.getElementById("costFluppe");
+const buttonFootnote = document.getElementById("footnoteButton");
+const labelFootnote = document.getElementById("labelFootnoteButton")
 const quote = document.getElementById("quote");
-const moneyWastedLabel = document.getElementById("moneyWastedLabel");
-const changeAnimationButton = document.getElementById("animationButton");
-const labelAnimationButton = document.getElementById("labelAnimationButton");
+const labelMoneyWasted = document.getElementById("moneyWastedLabel");
+const buttonChangeAnimation = document.getElementById("animationButton");
+const labelAnimation = document.getElementById("labelAnimationButton");
+const inputWeeklyReduction = document.getElementById("fluppenReduction");
 
 
 //misc
-const fluppenBergIMG = document.querySelector(".fluppenBerg");
-const fluppeAshIMG = document.querySelector(".singleFluppeAsh");
-const fluppeBurningIMG = document.querySelector(".singleFluppeBurning");
-const phrase = document.getElementById("phrase");
-const resetLS = document.getElementById("resetLS");
+const cigarettePileImage = document.querySelector(".cigarettePileImage");
+const ashImage = document.querySelector(".singleFluppeAsh");
+const burningImage = document.querySelector(".singleFluppeBurning");
+const phraseText = document.getElementById("phrase");
+const resetLocalStorage = document.getElementById("resetLS");
 const resetHistory = document.getElementById("resetHistory");
 const testHistory = document.getElementById("testHistory");
-const ctx = document.getElementById("testChart");
+const chartCanvas = document.getElementById("historyChart");
 const historyData = loadData("history", []);
 
 
 
+// Startup
+function init() {
+    count = loadData("count", 0)
+    dailyLimit = loadData("dailyLimit", 0);
+    cigarettePrice = loadData("cigarettePrice", 0);
+    selectedAnimation = loadData("selectedAnimation", "lung")
+    oldPercent = Number(loadData("oldPercent", -82));
+    weeklyReduction = loadData("weeklyReduction", 0);
+    labelCountCigarette.textContent = count;
+    labelDailyLimit.textContent = dailyLimit;
+    labelMoneyWasted.textContent = calculateMoneyWasted();
+    inputDailyLimit.value = dailyLimit;
+    inputCigarettePrice.value = cigarettePrice;
 
-//EventListener
-
-
-document.addEventListener("visibilitychange", function() {
-    if(document.visibilityState === "visible") {
-        checkReset();
-        getMoving();
-        fluppeBurningIMG.style.opacity = 0;
-        getMovingTwo();
-    }
-});
-
-// Fluppen Button
-buttonFluppe.addEventListener("click", function () {
-    count += 1;
-    labelFluppe.textContent = count;
-    moneyWastedLabel.textContent = moneyWastedCalc();
-    saveData("count", count);
-    getMoving();
-    getMovingTwo();
-    princessTreatment(); 
-});
-
-// reset locaStorage
-resetLS.addEventListener("click", function () {
-    localStorage.removeItem("count");
-    localStorage.removeItem("maxFluppe");
-    localStorage.removeItem("history");
-    localStorage.removeItem("lastDate");
-    localStorage.removeItem("index");
-    count = 0;
-    labelFluppe.textContent = count;
-    maxFluppe = 0;
-    labelMax.textContent = maxFluppe;
-    }
-);
-
-resetHistory.addEventListener("click", function() {
-    localStorage.removeItem("history")
-});
-
-testHistory.addEventListener("click", function() {
-    if (loadData("history").length === 0) {
-        localStorage.setItem("history", JSON.stringify([{"time":"Mon Nov 09 2026","count":10}, {"time":"Sun Nov 08 2026","count":14}, {"time":"Sat Nov 07 2026","count":8}])); 
-    }
-});
-
-footnoteButton.addEventListener("click", function() {
-    quote.classList.toggle("hidden");
-    moneyWastedContainer.classList.toggle("hidden");
-    if (quote.classList.contains("hidden")) {
-        labelFootnoteButton.textContent = "wasted money";
-        moneyWastedLabel.textContent = moneyWastedCalc();
-    }
-    else labelFootnoteButton.textContent = "quote";
-});
-
-changeAnimationButton.addEventListener("click", function() {
-    animationOne.classList.toggle("hidden");
-    animationTwo.classList.toggle("hidden");
-    if(animationOne.classList.contains("hidden")) {
-        labelAnimationButton.textContent = "Cigarette";
-    }
-    else labelAnimationButton.textContent = "lung";
-});
-
-fluppeBurningIMG.addEventListener('transitionend', function () {
-    fluppeBurningIMG.style.opacity = 0;
-    fluppeAshIMG.style.opacity = 1;
-});
-
-
-// ClassList thingy to display different pages
-// nothing to see here, just perfectly written and efficient code
-// TODO add navStats
-function toggleNav () {
-    menu.classList.toggle("active");
-    unresponsivePage.classList.toggle("hidden");
-};
-
-unresponsivePage.addEventListener("click", function() {
-    toggleNav();
-});
-
-navHome.addEventListener("click", function() {
-    mainPage.classList.remove("hidden");
-    settingsPage.classList.add("hidden");
-    statsPage.classList.add("hidden");
-    toggleNav();
-});
-
-navSettings.addEventListener("click", function() {
-    mainPage.classList.add("hidden");
-    settingsPage.classList.remove("hidden");
-    statsPage.classList.add("hidden");
-    toggleNav();
-});
-
-navStats.addEventListener("click", function() {
-    mainPage.classList.add("hidden");
-    settingsPage.classList.add("hidden");
-    statsPage.classList.remove("hidden");
-    toggleNav();
-    if (typeof Chart !== "undefined") {
-        const [labels, values] = extractHistoryChart();
-        updateChart(labels, values);
-    }
-});
-
-settingsIcon.addEventListener("click", toggleNav);
-
-
-// update max fluppen
-maxInput.addEventListener("change", function() {
-    maxFluppe = Number(maxInput.value);
-    labelMax.textContent = maxFluppe;
-    saveData("maxFluppe", maxFluppe);
-});
-
-costFluppeInput.addEventListener("change", function() {
-    costFluppe = Number(costFluppeInput.value);
-    saveData("costFluppe", costFluppe);
-    moneyWastedLabel.textContent = moneyWastedCalc();
-})
+    resetIfNewDay();
+    showAnimation();
+    princessTreatment();
+}
 
 
 
-// Functions
+// Storage helper
 
-//Storage helper
 function loadData (key, fallback) {
     try {
         const rawData = localStorage.getItem(key)
@@ -189,83 +85,155 @@ function saveData(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
 };
 
-function checkReset() {
-    const today = new Date().toDateString();
-    if (loadData("lastDate", null) !== today) {
-        dangerContainer.classList.add("hidden");
-        updateHistory();
-        count = 0;
-        index = 0;
-        labelFluppe.textContent = count;
-        shuffledPhrases = shuffle(meanPhrases);
-        saveData("lastDate", today);
-        saveData("count", count);
-        saveData("index", index)
-        saveData("shuffledPhrases", shuffledPhrases);
-        if (today.slice(0,3) === "Mon") {
-            maxFluppe -= 1;              // TODO add user input method and to enable
-            labelMax.textContent = maxFluppe;
-            saveData("maxFluppe", maxFluppe);
-        }
+
+
+// Navigation
+
+function toggleMenu () {
+    menu.classList.toggle("active");
+    menuOverlay.classList.toggle("hidden");
+};
+
+menuOverlay.addEventListener("click", function() {
+    toggleMenu();
+});
+
+navHome.addEventListener("click", function() {
+    mainPage.classList.remove("hidden");
+    settingsPage.classList.add("hidden");
+    statsPage.classList.add("hidden");
+    toggleMenu();
+});
+
+navSettings.addEventListener("click", function() {
+    mainPage.classList.add("hidden");
+    settingsPage.classList.remove("hidden");
+    statsPage.classList.add("hidden");
+    toggleMenu();
+});
+
+navStats.addEventListener("click", function() {
+    mainPage.classList.add("hidden");
+    settingsPage.classList.add("hidden");
+    statsPage.classList.remove("hidden");
+    toggleMenu();
+    if (typeof Chart !== "undefined") {
+        const [labels, values] = extractHistoryChart();
+        updateChart(labels, values);
     }
+});
+
+settingsIcon.addEventListener("click", toggleMenu);
+
+
+
+// Counter
+
+// Fluppen Button
+ButtonCountCigarette.addEventListener("click", function () {
+    count += 1;
+    labelCountCigarette.textContent = count;
+    labelMoneyWasted.textContent = calculateMoneyWasted();
+    saveData("count", count);
+    showAnimation();
+    princessTreatment(); 
+});
+
+// update max fluppen
+inputDailyLimit.addEventListener("change", function() {
+    dailyLimit = Number(inputDailyLimit.value);
+    labelDailyLimit.textContent = dailyLimit;
+    saveData("dailyLimit", dailyLimit);
+});
+
+inputCigarettePrice.addEventListener("change", function() {
+    cigarettePrice = Number(inputCigarettePrice.value);
+    saveData("costFluppe", cigarettePrice);
+    labelMoneyWasted.textContent = calculateMoneyWasted();
+});
+
+inputWeeklyReduction.addEventListener("change", function() {
+    weeklyReduction = Number(inputWeeklyReduction.value);
+    saveData("fluppenReduction", weeklyReduction);
+});
+
+function calculateMoneyWasted() {
+    let temp = 0;
+    let hCount;
+    cigarettePrice = loadData("costFluppe", 0);
+    for (let obj of historyData){
+        hCount = Number(obj["count"]);
+        temp += hCount;   
+    }
+    moneyWasted = (temp + count) * cigarettePrice;
+    moneyWasted = moneyWasted.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
+    return moneyWasted
 };
 
 
-// history
-function updateHistory() {
-    const historyData = loadData("history", []);
-    historyData.push({ "time": loadData("lastDate", new Date().toDateString()), "count": count });
-    saveData("history", historyData);
-};
 
+// Animation
 
-// for future feature, where weekly avarage cigarette count is used as maxFluppe NOT TESTED
-function getHistoryWeekCount () {
-    const todayDay = today.slice(8, 10)
-    let weekCount;
-    let i = 7;
-    if (historyData.length() >= 7) {
-        let historySlice = historyData.slice(-7)
-        for (let obj of historySlice) {
-            let hDay = obj[0];
-            if (hDay.slice(8,10) == todayDay - 1) {
-                let hCount = Number(obj[1]);
-                weekCount += hCount;
-            }
-            else i -= 1;
-            todayDay -= 1;
-        }
-        const averageCount = weekCount / i;
-        return averageCount
+buttonChangeAnimation.addEventListener("click", function() {
+    if (selectedAnimation == "lung") {
+        selectedAnimation = "cigarette";
     }
-}
+    else selectedAnimation = "lung"
+    showAnimation();
+    saveData("selectedAnimation", selectedAnimation)
+});
 
-
-
-// calculate transition for animation
-
-function percentCalc (startpos = 100) {
-    let aniCount = Math.min(count, maxFluppe);
-    let percent = startpos - (aniCount / maxFluppe) * startpos;
+function calculatePercent (startpos = 100) {
+    let aniCount = Math.min(count, dailyLimit);
+    let percent = startpos - (aniCount / dailyLimit) * startpos;
     return percent
 }
 
-function getMoving () {
-    let percent = percentCalc()
-    fluppenBergIMG.style.transform = `translateY(${percent}%)`;
+function updateLungAnimation () {
+    percent = calculatePercent()
+    cigarettePileImage.style.transform = `translateY(${percent}%)`;
 };
 
-function getMovingTwo () {
-    let percent = -(percentCalc(82));
-
-    if (percent != -82){
-        fluppeBurningIMG.style.opacity = 1;
-        fluppeAshIMG.style.opacity = 0;
-        fluppeAshIMG.style.transform = `translateY(${percent}%)`;
-        fluppeBurningIMG.style.transform = `translateY(${percent}%)`;
+function updateCigaretteAnimation () {          //burningImage opacity not working as intended
+    percent = -(calculatePercent(82));
+    if (percent != oldPercent) {
+        burningImage.style.opacity = 1;
+        ashImage.style.opacity = 0;
     }
-}
+    else if (percent === -82) {
+        burningImage.style.opacity = 0;
+        ashImage.style.opacity = 0;
+    }
+    ashImage.style.transform = `translateY(${percent}%)`;
+    burningImage.style.transform = `translateY(${percent}%)`;
 
+    oldPercent = percent;
+    saveData("oldPercent", oldPercent)
+};
+
+burningImage.addEventListener('transitionend', function () {
+    burningImage.style.opacity = 0;
+    ashImage.style.opacity = 1;
+});
+
+function showAnimation() {
+    if (selectedAnimation == "cigarette") {
+        lungAnimation.classList.add("hidden");
+        cigaretteAnimation.classList.remove("hidden");
+        labelAnimation.textContent = "cigarette"
+        updateCigaretteAnimation()
+    }
+    else {
+        lungAnimation.classList.remove("hidden");
+        cigaretteAnimation.classList.add("hidden");
+        labelAnimation.textContent = "lung";
+        updateLungAnimation()
+    }
+};
+
+
+
+// Phrases
 
 // scolding phrases, neatly displayed on failure
 const meanPhrases = [
@@ -298,20 +266,20 @@ const meanPhrases = [
 ];
 
 function princessTreatment() {
-    if (count > maxFluppe) {
+    if (count > dailyLimit) {
         dangerContainer.classList.remove("hidden");
-        phrase.textContent = nextPhrase();
+        phraseText.textContent = getNextPhrase();
     }
 };
 
-function nextPhrase() {
-    index = loadData("index", 0);
+function getNextPhrase() {
+    phraseIndex = loadData("index", 0);
     shuffledPhrases = loadData("shuffledPhrases", []);
     if (shuffledPhrases.length === 0) {
         shuffledPhrases = shuffle(meanPhrases);};
-    const phrase = shuffledPhrases[index];
-    index = (index + 1) % shuffledPhrases.length;
-    saveData("index", index);
+    const phrase = shuffledPhrases[phraseIndex];
+    phraseIndex = (phraseIndex + 1) % shuffledPhrases.length;
+    saveData("index", phraseIndex);
     return phrase;
 }
 
@@ -324,6 +292,16 @@ function shuffle(array) {
     return copy;
 }
 
+
+
+// History and Chart
+
+function updateHistory() {
+    const historyData = loadData("history", []);
+    historyData.push({ "time": loadData("lastDate", new Date().toDateString()), "count": count });
+    saveData("history", historyData);
+};
+
 function extractHistoryChart() {
     const labelDate = [];
     const countData = [];
@@ -334,25 +312,10 @@ function extractHistoryChart() {
     return [labelDate, countData];
 }
 
-function moneyWastedCalc() {
-    let temp = 0;
-    let hCount;
-    costFluppe = loadData("costFluppe", 0);
-    for (let obj of historyData){
-        hCount = Number(obj["count"]);
-        temp += hCount;   
-    }
-    cost = (temp + count) * costFluppe;
-    cost = cost.toLocaleString("de-DE", { style: "currency", currency: "EUR" });
-    return cost
-};
-
-
-
 //------------------- Chart ----------------
 if (typeof Chart !== "undefined") {
 
-    const testChart = new Chart(ctx, {
+    const historyChart = new Chart(chartCanvas, {
     type: "bar",
     data: {
         labels: [],
@@ -378,27 +341,103 @@ if (typeof Chart !== "undefined") {
     },);
 
     function updateChart(newLabels, newValues) {
-    testChart.data.labels = newLabels;
-    testChart.data.datasets[0].data = newValues;
-    testChart.update();
+    historyChart.data.labels = newLabels;
+    historyChart.data.datasets[0].data = newValues;
+    historyChart.update();
     };
 };
 
 
 
+// Settings and reset
 
-count = loadData("count", 0)
-maxFluppe = loadData("maxFluppe", 0);
-costFluppe = loadData("costFluppe", 0);
-labelFluppe.textContent = count;
-labelMax.textContent = maxFluppe;
-moneyWastedLabel.textContent = moneyWastedCalc();
-maxInput.value = maxFluppe;
-costFluppeInput.value = costFluppe;
-labelAnimationButton.textContent = "cigarette"
-labelFootnoteButton.textContent = "wasted money"
-fluppeBurningIMG.style.opacity = 0;
-checkReset();
-getMoving();
-getMovingTwo();
-princessTreatment();
+document.addEventListener("visibilitychange", function() {
+    if(document.visibilityState === "visible") {
+        resetIfNewDay();
+        showAnimation();
+    }
+});
+
+buttonFootnote.addEventListener("click", function() {
+    quote.classList.toggle("hidden");
+    moneyWastedContainer.classList.toggle("hidden");
+    if (quote.classList.contains("hidden")) {
+        labelFootnote.textContent = "wasted money";
+        labelMoneyWasted.textContent = calculateMoneyWasted();
+    }
+    else labelFootnote.textContent = "quote";
+});
+
+function resetIfNewDay() {
+    const today = new Date().toDateString();
+    if (loadData("lastDate", null) !== today) {
+        dangerContainer.classList.add("hidden");
+        updateHistory();
+        count = 0;
+        phraseIndex = 0;
+        oldPercent = -82;
+        labelCountCigarette.textContent = count;
+        shuffledPhrases = shuffle(meanPhrases);
+        saveData("lastDate", today);
+        saveData("count", count);
+        saveData("phraseIndex", phraseIndex);
+        saveData("shuffledPhrases", shuffledPhrases);
+        saveData("oldPercent", oldPercent);
+        if (today.slice(0,3) === "Mon") {
+            dailyLimit -= Number(weeklyReduction);
+            labelDailyLimit.textContent = dailyLimit;
+            saveData("dailyLimit", dailyLimit);
+        }
+    }
+};
+
+resetLocalStorage.addEventListener("click", function () {
+    localStorage.removeItem("count");
+    localStorage.removeItem("dailyLimit");
+    localStorage.removeItem("maxFluppe");
+    localStorage.removeItem("lastDate");
+    localStorage.removeItem("phraseIndex");
+    localStorage.removeItem("index");
+    count = 0;
+    labelCountCigarette.textContent = count;
+    dailyLimit = 0;
+    labelDailyLimit.textContent = dailyLimit;
+    }
+);
+
+resetHistory.addEventListener("click", function() {
+    localStorage.removeItem("history")
+});
+
+testHistory.addEventListener("click", function() {
+    if (loadData("history").length === 0) {
+        localStorage.setItem("history", JSON.stringify([{"time":"Mon Nov 09 2026","count":10}, {"time":"Sun Nov 08 2026","count":14}, {"time":"Sat Nov 07 2026","count":8}])); 
+    }
+});
+
+
+
+// for future feature, where weekly avarage cigarette count is used as dailyLimit NOT TESTED
+function getHistoryWeekCount () {
+    const todayDay = today.slice(8, 10)
+    let weekCount;
+    let i = 7;
+    if (historyData.length >= 7) {
+        let historySlice = historyData.slice(-7)
+        for (let obj of historySlice) {
+            let hDay = obj[0];
+            if (hDay.slice(8,10) == todayDay - 1) {
+                let hCount = Number(obj[1]);
+                weekCount += hCount;
+            }
+            else i -= 1;
+            todayDay -= 1;
+        }
+        const averageCount = weekCount / i;
+        return averageCount
+    }
+}
+
+
+
+init();
